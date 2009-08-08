@@ -378,6 +378,13 @@ function MonkeyQuest_SetFrameAlpha(iAlpha)
 	MonkeyQuestFrame:SetAlpha(iAlpha);
 end
 
+function MonkeyQuest_SetHighlightAlpha(iAlpha)
+
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight) then
+		MonkeyQuest_Refresh();
+	end
+end
+
 function MonkeyQuest_Refresh(MBDaily)
 
 	-- if not loaded yet, get outta here
@@ -826,7 +833,7 @@ function MonkeyQuest_Refresh(MBDaily)
 									local a, r, g, b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strZoneHighlightColour);
 	
 									-- getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
-									getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(r, g, b, 1);
+									getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha);
 								end
 							end
 						end
@@ -860,7 +867,7 @@ end
 
 function MonkeyQuest_RefreshQuestItemList()
 
-	local strQuestLogTitleText, strQuestLevel, strQuestTag, isHeader, isCollapsed, isComplete;
+	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete;
 	local i;
 	local iNumEntries, iNumQuests = GetNumQuestLogEntries();
 
@@ -872,7 +879,7 @@ function MonkeyQuest_RefreshQuestItemList()
 		-- strQuestLogTitleText		the title text of the quest, may be a header (ex. Wetlands)
 		-- strQuestLevel			the level of the quest
 		-- strQuestTag				the tag on the quest (ex. COMPLETED)
-		strQuestLogTitleText, strQuestLevel, strQuestTag, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
+		strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 		
 		if (not isHeader) then
 			-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
