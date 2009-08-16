@@ -15,6 +15,7 @@ MonkeyQuest.m_bCleanQuestList = true;	-- used to clean up the hidden list on the
 MonkeyQuest.m_colourBorder = { r = TOOLTIP_DEFAULT_COLOR.r, g = TOOLTIP_DEFAULT_COLOR.g, b = TOOLTIP_DEFAULT_COLOR.b };
 
 MonkeyQuestObjectiveTable = {};
+MonkeyQuestAllowSounds = false
 
 function MonkeyQuest_OnLoad()
     hooksecurefunc("HideUIPanel", MonkeyQuest_Refresh);
@@ -328,6 +329,10 @@ function MonkeyQuestShowHiddenCheckButton_OnClick()
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = false;
 	end
 
+	if (MonkeyBuddyFrame ~= nil) then
+		MonkeyBuddyQuestCheck2:SetChecked(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden)
+	end
+
 	MonkeyQuest_Refresh();
 end
 
@@ -371,17 +376,32 @@ function MonkeyQuest_SetAlpha(iAlpha)
 	MonkeyQuestFrame:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, iAlpha);
 
 	--MonkeyQuestFrame:SetAlpha(0.5);
+
+	-- check for MonkeyBuddy
+	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
+		MonkeyBuddyQuestFrame_Refresh();
+	end
 end
 
 function MonkeyQuest_SetFrameAlpha(iAlpha)
 
 	MonkeyQuestFrame:SetAlpha(iAlpha);
+
+	-- check for MonkeyBuddy
+	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
+		MonkeyBuddyQuestFrame_Refresh();
+	end
 end
 
 function MonkeyQuest_SetHighlightAlpha(iAlpha)
 
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight) then
 		MonkeyQuest_Refresh();
+	end
+
+	-- check for MonkeyBuddy
+	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
+		MonkeyBuddyQuestFrame_Refresh();
 	end
 end
 
@@ -748,8 +768,8 @@ function MonkeyQuest_Refresh(MBDaily)
 												MonkeyQuestObjectiveTable[currentObjectiveName] = {};
 											end
 
-											if (objectiveComplete == 1 and MonkeyQuestObjectiveTable[currentObjectiveName].complete == nil) then
-											
+											if (objectiveComplete == 1 and MonkeyQuestObjectiveTable[currentObjectiveName].complete == nil and MonkeyQuestAllowSounds == true) then
+
 												local FactionPlayer = UnitFactionGroup("player")
 
 												if (FactionPlayer == "Alliance") then
@@ -779,7 +799,7 @@ function MonkeyQuest_Refresh(MBDaily)
 												MonkeyQuestObjectiveTable[currentObjectiveDesc] = {};
 											end
 
-											if (objectiveComplete == 1 and MonkeyQuestObjectiveTable[currentObjectiveDesc].complete == nil) then
+											if (objectiveComplete == 1 and MonkeyQuestObjectiveTable[currentObjectiveDesc].complete == nil and MonkeyQuestAllowSounds == true) then
 
 												local FactionPlayer = UnitFactionGroup("player")
 
@@ -847,6 +867,10 @@ function MonkeyQuest_Refresh(MBDaily)
 						strMonkeyQuestBody = "";
 					end
 				end
+			end
+			-- this prevents the "stacked" complete sound after login/loading screen
+			if (i == iNumEntries) then
+				MonkeyQuestAllowSounds = true
 			end
 		end
 	end
