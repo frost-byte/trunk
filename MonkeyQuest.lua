@@ -1,4 +1,4 @@
--- script variables not saved
+﻿-- script variables not saved
 MonkeyQuest = {};
 MonkeyQuest.m_bLoaded = false;				-- true when the config variables are loaded
 MonkeyQuest.m_bVariablesLoaded = false;
@@ -171,10 +171,6 @@ function MonkeyQuest_OnEvent(event)
             end
         end
         
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
-        	HideDetailedControls();
-        end
-
         -- exit this event
         return;
     
@@ -269,17 +265,21 @@ end
 -- wraith:
 function ShowDetailedControls()
 	MonkeyQuestTitleText:Show();
-	MonkeyQuestMinimizeButton:Show();
-	MonkeyQuestCloseButton:Show();
-	MonkeyQuestShowHiddenCheckButton:Show();
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == false) then
+		MonkeyQuestMinimizeButton:Show();
+		MonkeyQuestCloseButton:Show();
+		MonkeyQuestShowHiddenCheckButton:Show();
+	end
 end
 
 -- wraith:
 function HideDetailedControls()
 	MonkeyQuestTitleText:Hide();
-	MonkeyQuestMinimizeButton:Hide();
-	MonkeyQuestCloseButton:Hide();
-	MonkeyQuestShowHiddenCheckButton:Hide();
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == false) then
+		MonkeyQuestMinimizeButton:Hide();
+		MonkeyQuestCloseButton:Hide();
+		MonkeyQuestShowHiddenCheckButton:Hide();
+	end
 end
 
 function MonkeyQuestCloseButton_OnClick()
@@ -1269,9 +1269,11 @@ function MonkeyQuestButton_OnClick(button)
 		return;
 	end
 	
+	local activeWindow = ChatEdit_GetActiveWindow();
+	
 	-- print text to the chat edit frame if shift is down and the 
 	-- chat frame edit box is open and it's not a zone header
-	if (IsShiftKeyDown() and ChatFrameEditBox:IsVisible()) then
+	if (IsShiftKeyDown() and activeWindow) then
 		-- what button was it?
 		if (button == "LeftButton") then
 			if (strQuestTag == GROUP) then
@@ -1282,44 +1284,44 @@ function MonkeyQuestButton_OnClick(button)
 				grp = grp .. suggestedGroup;
 			end
 				if (isDaily ~= 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "g" .. grp .. "] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "g" .. grp .. "] " .. strQuestLink .. " ");
 				end
 				if (isDaily == 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "g" .. grp .. "*] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "g" .. grp .. "*] " .. strQuestLink .. " ");
 				end
 				
 			elseif (strQuestTag == MONKEYQUEST_DUNGEON) then
 				if (isDaily ~= 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "d] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "d] " .. strQuestLink .. " ");
 				end
 				if (isDaily == 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "d*] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "d*] " .. strQuestLink .. " ");
 				end
 				
 			elseif (strQuestTag == RAID) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "r] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "r] " .. strQuestLink .. " ");
 				
 			elseif (strQuestTag == MONKEYQUEST_PVP) then
 				if (isDaily ~= 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "p] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "p] " .. strQuestLink .. " ");
 				end
 				if (isDaily == 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "p*] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "p*] " .. strQuestLink .. " ");
 				end
 				
 			elseif (strQuestTag == DUNGEON_DIFFICULTY2) then
 				if (isDaily ~= 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "d+] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "d+] " .. strQuestLink .. " ");
 				end
 				if (isDaily == 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "d+*] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "d+*] " .. strQuestLink .. " ");
 				end
 				
 			elseif (isDaily == 1) then
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "*] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "*] " .. strQuestLink .. " ");
 				
 			else
-				ChatFrameEditBox:Insert("[" .. strQuestLevel .. "] " .. strQuestLink .. " ");
+				activeWindow:Insert("[" .. strQuestLevel .. "] " .. strQuestLink .. " ");
 				
 			end
 		else
@@ -1347,7 +1349,7 @@ function MonkeyQuestButton_OnClick(button)
 				strChatObjectives = strChatObjectives .. "{" .. strQuestObjectives .. "} ";
 			end
 
-			ChatFrameEditBox:Insert(strChatObjectives);
+			activeWindow:Insert(strChatObjectives);
 
 			-- Restore the currently selected quest log entry
 			SelectQuestLogEntry(tmpQuestLogSelection);
