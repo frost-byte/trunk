@@ -1,6 +1,6 @@
--- Not translations
+﻿-- Not translations
 MONKEYQUEST_TITLE						= "MonkeyQuest"
-MONKEYQUEST_VERSION						= "2.9.7"
+MONKEYQUEST_VERSION						= "2.9.8"
 MONKEYQUEST_TITLE_VERSION				= MONKEYQUEST_TITLE .. " v" .. MONKEYQUEST_VERSION
 MONKEYQUEST_INFO_COLOUR					= "|cffffff00"
 MONKEYQUEST_CHAT_COLOUR					= "|cff00ff00"
