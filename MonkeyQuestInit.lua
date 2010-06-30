@@ -139,8 +139,8 @@ function MonkeyQuestInit_LoadConfig()
 	end
 
 	-- Skinny font
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashFont == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashFont = MONKEYQUEST_DEFAULT_CRASHFONT;
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = MONKEYQUEST_DEFAULT_FONT;
 	end
 
 	-- Golden border
@@ -171,6 +171,18 @@ function MonkeyQuestInit_LoadConfig()
 	-- BIB vars
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == nil) then
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB = MONKEYQUEST_DEFAULT_LOCKBIB;
+	end
+	
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
+	end
+	
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = MONKEYQUEST_DEFAULT_ITEMSONLEFT;
+	end
+	
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
 	end
 	
 	-- force unlocked from bib if there is no bib
@@ -299,8 +311,11 @@ function MonkeyQuestInit_ResetConfig()
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourTitle = MONKEYQUEST_DEFAULT_COLOURTITLE;
 
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight = MONKEYQUEST_DEFAULT_FONTHEIGHT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashFont = MONKEYQUEST_DEFAULT_CRASHFONT;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = MONKEYQUEST_DEFAULT_FONT;
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder = MONKEYQUEST_DEFAULT_CRASHBORDER;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = MONKEYQUEST_DEFAULT_ITEMSONLEFT;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
 	
 	-- noob tips
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips = MONKEYQUEST_DEFAULT_SHOWNOOBTIPS;
@@ -322,24 +337,59 @@ function MonkeyQuestInit_ResetConfig()
 
 	-- finally apply the settings
 	MonkeyQuestInit_ApplySettings();
+	
+	ShowDetailedControls();
 end
 
-function MonkeyQuestInit_Font(bCrashFont)
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashFont = bCrashFont;
+-- This resets your config to make MonkeyQuest look like the Blizzard quest tracker
+function MonkeyQuestInit_ResetConfigToBlizzardStyle()
+	MonkeyQuestInit_ResetConfig();
+	
+	-- apply blizzard style
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameAlpha = MONKEYQUEST_BLIZZARD_FRAME_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = MONKEYQUEST_BLIZZARD_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding = MONKEYQUEST_BLIZZARD_QUESTPADDING;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel = MONKEYQUEST_BLIZZARD_SHOWQUESTLEVEL;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives = MONKEYQUEST_BLIZZARD_OBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder = MONKEYQUEST_BLIZZARD_NOBORDER;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests = MONKEYQUEST_BLIZZARD_SHOWNUMQUESTS;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete = MONKEYQUEST_BLIZZARD_WORKCOMPLETE;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour = MONKEYQUEST_BLIZZARD_QUESTTITLECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour = MONKEYQUEST_BLIZZARD_COMPLETEOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour = MONKEYQUEST_BLIZZARD_FINISHOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = MONKEYQUEST_BLIZZARD_FONT;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_BLIZZARD_COLOURSUBOBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = MONKEYQUEST_BLIZZARD_ITEMSONLEFT;
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_BLIZZARD_HIDEHEADER;
 
-	if (bCrashFont) then
+	-- finally apply the settings
+	MonkeyQuestInit_ApplySettings();
+	
+	HideDetailedControls();
+end
 
-		-- change the fonts
-		--MonkeyQuestTitleText:SetFont("Interface\\AddOns\\MonkeyLibrary\\Fonts\\adventure.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
-		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\myriapsc.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
+function MonkeyQuestInit_Font(iFont)
 
-	else
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = iFont;
+
+	if (iFont == 0) then
 		-- Default look
 		
 		-- change the fonts
 		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\framd.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
 		--MonkeyQuestTitleText:SetFont("Fonts\\FRIZQT__.TTF", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
+
+	elseif ( iFont == 1 ) then 
+		-- crash font
+		
+		--MonkeyQuestTitleText:SetFont("Interface\\AddOns\\MonkeyLibrary\\Fonts\\adventure.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
+		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\myriapsc.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
+
+	elseif ( iFont == 2 ) then
+		-- Blizzard style
+		
+		MonkeyQuestInit_SetButtonFonts(STANDARD_TEXT_FONT, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
 	end
 
 	-- check for MonkeyBuddy
@@ -397,7 +447,7 @@ end
 function MonkeyQuestInit_ApplySettings()
 
 	-- init the look
-	MonkeyQuestInit_Font(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashFont);
+	MonkeyQuestInit_Font(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont);
 	MonkeyQuestInit_Border(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder);
 	
 	-- show or hide the main frame

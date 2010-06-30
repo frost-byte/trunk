@@ -84,7 +84,8 @@ function BIB_MonkeyQuestButton_Initialize()
 	-- Initialize the icon
 	BIB_MonkeyQuestButton_SetIcon();
 	
-	BIB_MonkeyQuestButtonText:SetFont("Interface\\AddOns\\MonkeyLibrary\\Fonts\\adventure.ttf", BHINFOBAR_CONFIG[BM_PLAYERNAME_REALM].plugin_fontsize);
+	--BIB_MonkeyQuestButtonText:SetFont("Interface\\AddOns\\MonkeyLibrary\\Fonts\\adventure.ttf", BHINFOBAR_CONFIG[BM_PLAYERNAME_REALM].plugin_fontsize);
+	BIB_MonkeyQuestButtonText:SetFont( STANDARD_TEXT_FONT, BHINFOBAR_CONFIG[BM_PLAYERNAME_REALM].plugin_fontsize);
 	BIB_MonkeyQuestButtonText:SetTextColor(MONKEYLIB_TITLE_COLOUR.r, MONKEYLIB_TITLE_COLOUR.g, MONKEYLIB_TITLE_COLOUR.b);
 
 	-- initial text
