@@ -13,6 +13,20 @@ StaticPopupDialogs["MONKEYQUEST_RESET"] = {
 	exclusive = 1
 };
 
+StaticPopupDialogs["MONKEYQUEST_RESET_TO_BLIZZARD_STYLE"] = {
+	text = TEXT(MONKEYQUEST_CONFIRM_RESET_TO_BLIZZARD_STYLE),
+	button1 = TEXT(OKAY),
+	button2 = TEXT(CANCEL),
+	OnAccept = function()
+		MonkeyQuestInit_ResetConfigToBlizzardStyle();
+		if (DEFAULT_CHAT_FRAME) then
+			DEFAULT_CHAT_FRAME:AddMessage(MONKEYQUEST_RESET_TO_BLIZZARD_STYLE_MSG);
+		end
+	end,
+	timeout = 0,
+	exclusive = 1
+};
+
 -- function to register all the slash commands
 function MonkeyQuestSlash_Init()
 	-- this command toggles the Quest Monkey display
@@ -202,6 +216,30 @@ function MonkeyQuestSlash_Parse(msg)
 		MonkeyQuestSlash_CmdWorkComplete(false);
 		return;
 	end
+	if (string.lower(msg) == "colourobjectiveson") then
+		MonkeyQuestSlash_CmdColourObjectives(true);
+		return;
+	end
+	if (string.lower(msg) == "colourobjectivesoff") then
+		MonkeyQuestSlash_CmdColourObjectives(false);
+		return;
+	end
+	if (string.lower(msg) == "itemsonleft") then
+		MonkeyQuestSlash_CmdItemsOnLeft(true);
+		return;
+	end
+	if (string.lower(msg) == "itemsonright") then
+		MonkeyQuestSlash_CmdItemsOnLeft(false);
+		return;
+	end
+	if (string.lower(msg) == "hideheaderon") then
+		MonkeyQuestSlash_CmdHideHeader(true);
+		return;
+	end
+	if (string.lower(msg) == "hideheaderoff") then
+		MonkeyQuestSlash_CmdHideHeader(false);
+		return;
+	end
 
 	-- didn't match any others, print out the help msg
 	MonkeyQuestSlash_CmdHelp();
@@ -367,6 +405,10 @@ end
 
 function MonkeyQuestSlash_CmdReset()
 	StaticPopup_Show("MONKEYQUEST_RESET");
+end
+
+function MonkeyQuestSlash_CmdResetToBlizzardStyle()
+	StaticPopup_Show("MONKEYQUEST_RESET_TO_BLIZZARD_STYLE");
 end
 
 function MonkeyQuestSlash_CmdOpen(bOpen)
@@ -651,6 +693,41 @@ end
 
 function MonkeyQuestSlash_CmdWorkComplete(bWork)
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete = bWork;
+	MonkeyQuest_Refresh();
+
+	-- check for MonkeyBuddy
+	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
+		MonkeyBuddyQuestFrame_Refresh();
+	end
+end
+
+function MonkeyQuestSlash_CmdColourObjectives(bColour)
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = bColour;
+	MonkeyQuest_Refresh();
+
+	-- check for MonkeyBuddy
+	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
+		MonkeyBuddyQuestFrame_Refresh();
+	end
+end
+
+function MonkeyQuestSlash_CmdItemsOnLeft(bLeft)
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = bLeft;
+	MonkeyQuest_Refresh();
+
+	-- check for MonkeyBuddy
+	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
+		MonkeyBuddyQuestFrame_Refresh();
+	end
+end
+
+function MonkeyQuestSlash_CmdHideHeader(bHide)
+	if (bHide == false) then
+		ShowDetailedControls()
+	else
+		HideDetailedControls()
+	end
+	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = bHide;
 	MonkeyQuest_Refresh();
 
 	-- check for MonkeyBuddy

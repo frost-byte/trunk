@@ -11,6 +11,9 @@ MonkeyQuest.m_bGotQuestLogUpdate = false;
 MonkeyQuest.m_bNeedRefresh = false;
 MonkeyQuest.m_fTimeSinceRefresh = 0.0;
 MonkeyQuest.m_bCleanQuestList = true;	-- used to clean up the hidden list on the first questlog update event
+MonkeyQuest.m_setCorrectState = 1;
+MQWATCHFRAME_NUM_ITEMS = 0;
+MQWATCHFRAME_ITEM_WIDTH = 33;
 
 MonkeyQuest.m_colourBorder = { r = TOOLTIP_DEFAULT_COLOR.r, g = TOOLTIP_DEFAULT_COLOR.g, b = TOOLTIP_DEFAULT_COLOR.b };
 
@@ -57,6 +60,15 @@ function MonkeyQuest_OnUpdate(arg1)
 	-- if not loaded yet then get out
 	if (MonkeyQuest.m_bLoaded == false) then
 		return;
+	end
+	
+	if (MonkeyQuest.m_setCorrectState == 1) then
+		MonkeyQuest.m_setCorrectState = 0
+		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
+			HideDetailedControls();
+		else
+			ShowDetailedControls();
+		end
 	end
 
 	-- need to make sure we don't read from the quest list before a QUEST_LOG_UPDATE or we'll get the previous character's data
@@ -159,6 +171,10 @@ function MonkeyQuest_OnEvent(event)
             end
         end
         
+		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
+        	HideDetailedControls();
+        end
+
         -- exit this event
         return;
     
@@ -208,9 +224,6 @@ function MonkeyQuest_OnMouseDown(arg1)
 	if (arg1 == "RightButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick == true) then
 		if (MonkeyBuddyFrame ~= nil) then
 			MonkeyBuddy_ToggleDisplay()
-			
-			-- make MonkeyBuddy show the MonkeyQuest config
-			MonkeyBuddyQuestTab_OnClick();
 		end
 	end
 end
@@ -238,6 +251,7 @@ function MonkeyQuest_OnEnter()
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == true) then
 		MonkeyQuestFrame:Show();
 	end
+	ShowDetailedControls();
 end
 
 function MonkeyQuest_OnLeave()
@@ -246,6 +260,26 @@ function MonkeyQuest_OnLeave()
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == true) then
 		MonkeyQuest_Hide();
 	end
+
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
+		HideDetailedControls();
+	end
+end
+
+-- wraith:
+function ShowDetailedControls()
+	MonkeyQuestTitleText:Show();
+	MonkeyQuestMinimizeButton:Show();
+	MonkeyQuestCloseButton:Show();
+	MonkeyQuestShowHiddenCheckButton:Show();
+end
+
+-- wraith:
+function HideDetailedControls()
+	MonkeyQuestTitleText:Hide();
+	MonkeyQuestMinimizeButton:Hide();
+	MonkeyQuestCloseButton:Hide();
+	MonkeyQuestShowHiddenCheckButton:Hide();
 end
 
 function MonkeyQuestCloseButton_OnClick()
@@ -385,8 +419,18 @@ end
 
 function MonkeyQuest_SetFrameAlpha(iAlpha)
 
-	MonkeyQuestFrame:SetAlpha(iAlpha);
-
+	-- wraith:
+	--MonkeyQuestFrame:SetAlpha(iAlpha);
+	MonkeyQuestFrame:SetAlpha(1.0);
+	
+	MonkeyQuestTitleButton:SetAlpha( iAlpha );
+	MonkeyQuestCloseButton:SetAlpha( iAlpha );
+	MonkeyQuestMinimizeButton:SetAlpha( iAlpha );
+	MonkeyQuestShowHiddenCheckButton:SetAlpha( iAlpha );
+	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
+		getglobal("MonkeyQuestButton" .. i):SetAlpha( iAlpha );
+		getglobal("MonkeyQuestHideButton" .. i):SetAlpha( iAlpha );
+	end
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
 		MonkeyBuddyQuestFrame_Refresh();
@@ -527,6 +571,7 @@ function MonkeyQuest_Refresh(MBDaily)
 
 	MonkeyQuest_RefreshQuestItemList();
 
+	local watchItemIndex = 0;
 
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized == false) then
 
@@ -618,7 +663,11 @@ function MonkeyQuest_Refresh(MBDaily)
 						MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden)) then
 						
 						-- the user has this quest checked off or he's showing all quests anyways, so we show it
-						getglobal("MonkeyQuestHideButton" .. iButtonId):Show();
+						if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden ) then
+							getglobal("MonkeyQuestHideButton" .. iButtonId):Show();
+						else
+							getglobal("MonkeyQuestHideButton" .. iButtonId):Hide();
+						end
 						
 						-- update hide quests buttons
 						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked == true) then
@@ -729,6 +778,34 @@ function MonkeyQuest_Refresh(MBDaily)
 						
 
 						local strQuestDescription, strQuestObjectives = GetQuestLogQuestText();
+						
+						-- wraith: item
+						local link, item, charges = GetQuestLogSpecialItemInfo(i);
+						if ( item ) then
+							watchItemIndex = watchItemIndex + 1;
+							itemButton = _G["MQWatchFrameItem"..watchItemIndex];
+							if ( not itemButton ) then
+								MQWATCHFRAME_NUM_ITEMS = watchItemIndex;
+								itemButton = CreateFrame("BUTTON", "MQWatchFrameItem" .. watchItemIndex, getglobal("MonkeyQuestFrame"), "WatchFrameItemButtonTemplate");
+							end
+							itemButton:SetScale(0.7)
+							itemButton:Show();
+							itemButton:ClearAllPoints();
+							itemButton:SetID(i);
+							SetItemButtonTexture(itemButton, item);
+							SetItemButtonCount(itemButton, charges);
+							WatchFrameItem_UpdateCooldown(itemButton);
+							itemButton.rangeTimer = -1;
+							if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == true ) then
+								if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true ) then
+									itemButton:SetPoint( "TOPRIGHT", getglobal("MonkeyQuestHideButton" .. iButtonId), "TOPLEFT", -12, 0);
+								else
+									itemButton:SetPoint( "TOPRIGHT", getglobal("MonkeyQuestButton" .. iButtonId), "TOPLEFT" );
+								end
+							else
+								itemButton:SetPoint( "TOPLEFT", getglobal("MonkeyQuestButton" .. iButtonId), "TOPRIGHT", 12, 0);
+							end
+						end
 		
 						if (GetNumQuestLeaderBoards() > 0) then
 							for ii=1, GetNumQuestLeaderBoards(), 1 do
@@ -739,8 +816,11 @@ function MonkeyQuest_Refresh(MBDaily)
 								
 								if (strLeaderBoardText) then
 									if (not iFinished) then
-										strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. MonkeyQuest_GetLeaderboardColorStr(strLeaderBoardText) .. 
-											strLeaderBoardText .. "\n";
+										if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == true) then
+											strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. MonkeyQuest_GetLeaderboardColorStr(strLeaderBoardText) .. strLeaderBoardText .. "\n";
+										else
+											strMonkeyQuestBody = strMonkeyQuestBody .. "  - " .. MonkeyQuest_GetLeaderboardColorStr(strLeaderBoardText) .. strLeaderBoardText .. "\n";
+										end
 									elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives == false
 										or MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden) then
 										strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. 
@@ -878,6 +958,10 @@ function MonkeyQuest_Refresh(MBDaily)
 	
 	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
 		getglobal("MonkeyQuestButton" .. i .. "Text"):SetWidth(MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8);
+	end
+	
+	for i = watchItemIndex + 1, MQWATCHFRAME_NUM_ITEMS do
+		_G["MQWatchFrameItem" .. i]:Hide();
 	end
 	
 	-- Restore the current quest log selection
@@ -1040,27 +1124,32 @@ end
 -- Get a colour for the leaderboard item depending on how "done" it is
 function MonkeyQuest_GetLeaderboardColorStr(strText)
 	local i, j, strItemName, iNumItems, iNumNeeded = string.find(strText, "(.*):%s*([-%d]+)%s*/%s*([-%d]+)%s*$");
-
-	if (iNumItems ~= nil) then
-		local colour = {a = 1.0, r = 1.0, g = 1.0, b = 1.0};
-		colour.a, colour.r, colour.g, colour.b = MonkeyQuest_GetCompletenessColorStr(iNumItems, iNumNeeded);
-		return MonkeyLib_ARGBToColourStr(colour.a, colour.r, colour.g, colour.b);
-	end
-
-	-- it's a quest with no numerical objectives
-	local i, j, strItemName, strItems, strNeeded = string.find(strText, "(.*):%s*([-%a]+)%s*/%s*([-%a]+)%s*$");
-	-- is it a string/string type?
-	if (strItems ~= nil) then
-		if (strItems == strNeeded) then
-			-- strings are equal, completed objective
-			return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour;
+	
+	-- wraith:
+	if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == true ) then
+		if (iNumItems ~= nil) then
+			local colour = {a = 1.0, r = 1.0, g = 1.0, b = 1.0};
+			colour.a, colour.r, colour.g, colour.b = MonkeyQuest_GetCompletenessColorStr(iNumItems, iNumNeeded);
+			return MonkeyLib_ARGBToColourStr(colour.a, colour.r, colour.g, colour.b);
+		end
+	
+		-- it's a quest with no numerical objectives
+		local i, j, strItemName, strItems, strNeeded = string.find(strText, "(.*):%s*([-%a]+)%s*/%s*([-%a]+)%s*$");
+		-- is it a string/string type?
+		if (strItems ~= nil) then
+			if (strItems == strNeeded) then
+				-- strings are equal, completed objective
+				return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour;
+			else
+				-- strings are not equal, uncompleted objective
+				return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour;
+			end
 		else
-			-- strings are not equal, uncompleted objective
-			return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour;
+			-- special objective
+			return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strSpecialObjectiveColour;
 		end
 	else
-		-- special objective
-		return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strSpecialObjectiveColour;
+		return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour;
 	end
 end
 -- Get a colour for the leaderboard item depending on how "done" it is
@@ -1298,45 +1387,32 @@ function MonkeyQuestButton_OnClick(button)
 		return;
 	end
 	
-	-- if MonkeyQuestLog is installed, open that instead
-	if (MkQL_SetQuest ~= nil) then
-		if (MkQL_Main_Frame:IsVisible()) then
-			if (MkQL_global_iCurrQuest == this.m_iQuestIndex) then
-				MkQL_Main_Frame:Hide();
+	if (button == "LeftButton") then
+		-- if MonkeyQuestLog is installed, open that instead
+		if (MkQL_SetQuest ~= nil) then
+			if (MkQL_Main_Frame:IsVisible()) then
+				if (MkQL_global_iCurrQuest == this.m_iQuestIndex) then
+					MkQL_Main_Frame:Hide();
 				return;
+				end
 			end
+			MkQL_SetQuest(this.m_iQuestIndex);
+			return;
 		end
-		MkQL_SetQuest(this.m_iQuestIndex);
-		return;
+
+		-- show the real questlog
+		ShowUIPanel(QuestLogFrame);
+
+		-- actually select the quest entry
+		SelectQuestLogEntry(this.m_iQuestIndex);
+		QuestLog_SetSelection(this.m_iQuestIndex);
+
+		-- update the real quest log
+		QuestLog_Update();
+
+	elseif (button == "RightButton") then
+		-- TODO: hide the quest
 	end
-
-	-- show the real questlog
-	ShowUIPanel(QuestLogFrame);
-	
---[[ Not needed anymore
-	-- check if there's even a need to mess with the offset
-	if (MonkeyQuest.m_iNumEntries > #QuestLogScrollFrame.buttons) then
-	
-		-- move the real quest log list scrollbar to the correct place
-		if (this.m_iQuestIndex < MonkeyQuest.m_iNumEntries - #QuestLogScrollFrame.buttons) then
-			FauxScrollFrame_SetOffset(QuestLogListScrollFrame, this.m_iQuestIndex - 1);
-			QuestLogListScrollFrameScrollBar:SetValue((this.m_iQuestIndex - 1) * QUESTLOG_QUEST_HEIGHT);
-		else
-			FauxScrollFrame_SetOffset(QuestLogListScrollFrame, MonkeyQuest.m_iNumEntries - #QuestLogScrollFrame.buttons);
-			QuestLogListScrollFrameScrollBar:SetValue((MonkeyQuest.m_iNumEntries - #QuestLogScrollFrame.buttons) * QUESTLOG_QUEST_HEIGHT);
-		end
-	end
-]]-- Not needed anymore
-
-	-- actually select the quest entry
-	SelectQuestLogEntry(this.m_iQuestIndex);
-	QuestLog_SetSelection(this.m_iQuestIndex);
-
-	-- update the real quest log
-	QuestLog_Update();
-	
-	
-	-- if MonkeyQuestLog is installed, open that instead
 end
 
 function MonkeyQuestButton_OnEnter()
