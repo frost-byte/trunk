@@ -1,17 +1,17 @@
-BIB_MONKEYQUEST_ID =  "MonkeyQuest";
+﻿BIB_MONKEYQUEST_ID =  "MonkeyQuest";
 BIB_MONKEYQUEST_ICON_PATH = "Interface\\AddOns\\MonkeyLibrary\\Textures\\MonkeyBuddyIcon";
 BIB_MONKEYQUEST_ICON_SIZE = 16;
 
-function BIB_MonkeyQuestButton_OnLoad()
+function BIB_MonkeyQuestButton_OnLoad(self)
 	-- register events
-	this:RegisterEvent("VARIABLES_LOADED");
+	self:RegisterEvent("VARIABLES_LOADED");
 
 	BM_Plugin("BIB_MonkeyQuestButton", "MonkeyQuest", BIB_MONKEYQUEST_ICON_SIZE, "MonkeyQuest");
 	
 	DEFAULT_CHAT_FRAME:AddMessage("BIB_MonkeyQuestButton loaded");
 end
 
-function BIB_MonkeyQuestButton_OnEvent()
+function BIB_MonkeyQuestButton_OnEvent(self, event, ...)
 	if (event == "VARIABLES_LOADED") then
 		BIB_MonkeyQuestButton_Initialize();
 		--TitanPanelButtonBRL_SetIcon();
@@ -147,9 +147,9 @@ function BIB_MonkeyQuestButton_OnLeave()
 end
 
 --This function is in every plugin always the same
-function BIB_MonkeyQuestButton_OnRightClick(button)
+function BIB_MonkeyQuestButton_OnRightClick(self, button, down)
 	if (button == "RightButton") then
-		ToggleDropDownMenu(1, nil, getglobal(this:GetName().."RightClickMenu"), this:GetName(), 0, 0);
+		ToggleDropDownMenu(1, nil, getglobal(self:GetName().."RightClickMenu"), self:GetName(), 0, 0);
 		GameTooltip_SetDefaultAnchor(GameTooltip, UIParent);
 		GameTooltip:Hide();
 	end

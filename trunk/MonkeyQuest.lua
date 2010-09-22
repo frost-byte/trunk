@@ -20,25 +20,25 @@ MonkeyQuest.m_colourBorder = { r = TOOLTIP_DEFAULT_COLOR.r, g = TOOLTIP_DEFAULT_
 MonkeyQuestObjectiveTable = {};
 MonkeyQuestAllowSounds = false
 
-function MonkeyQuest_OnLoad()
+function MonkeyQuest_OnLoad(self)
     hooksecurefunc("HideUIPanel", MonkeyQuest_Refresh);
     hooksecurefunc(GameTooltip, "SetBagItem", YourSetBagItem);
     
     -- register events
-    this:RegisterEvent('VARIABLES_LOADED');
-    this:RegisterEvent('QUEST_LOG_UPDATE');			-- used to know when to refresh the MonkeyQuest text
-    this:RegisterEvent('UNIT_NAME_UPDATE');			-- this is the event I use to get per character config settings
-    this:RegisterEvent('PLAYER_ENTERING_WORLD');	-- this event gives me a good character name in situations where 'UNIT_NAME_UPDATE' doesn't even trigger
-    this:RegisterEvent('PLAYER_LEVEL_UP');			-- when you level up the difficulty of some quests may change
+    self:RegisterEvent('VARIABLES_LOADED');
+    self:RegisterEvent('QUEST_LOG_UPDATE');			-- used to know when to refresh the MonkeyQuest text
+    self:RegisterEvent('UNIT_NAME_UPDATE');			-- this is the event I use to get per character config settings
+    self:RegisterEvent('PLAYER_ENTERING_WORLD');	-- this event gives me a good character name in situations where 'UNIT_NAME_UPDATE' doesn't even trigger
+    self:RegisterEvent('PLAYER_LEVEL_UP');			-- when you level up the difficulty of some quests may change
 
 	-- events when zone changes to update the zone highlighting quests
-    this:RegisterEvent('ZONE_CHANGED');
-	this:RegisterEvent('ZONE_CHANGED_INDOORS');
-	this:RegisterEvent('ZONE_CHANGED_NEW_AREA');
+    self:RegisterEvent('ZONE_CHANGED');
+	self:RegisterEvent('ZONE_CHANGED_INDOORS');
+	self:RegisterEvent('ZONE_CHANGED_NEW_AREA');
     
     -- initialize the border and backdrop of the main frame
-    --this:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
-    --this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 0);
+    --self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
+    --self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 0);
     
     -- setup the title of the main frame
     MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE);
@@ -53,10 +53,10 @@ function MonkeyQuest_OnLoad()
 	aftt_setName = MonkeyQuest_NEW_aftt_setName;
     
     -- this will catch mobs needed for quests
-	this:RegisterEvent('UPDATE_MOUSEOVER_UNIT');
+	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT');
 end
 
-function MonkeyQuest_OnUpdate(arg1)
+function MonkeyQuest_OnUpdate(self, elapsed)
 	-- if not loaded yet then get out
 	if (MonkeyQuest.m_bLoaded == false) then
 		return;
@@ -77,7 +77,7 @@ function MonkeyQuest_OnUpdate(arg1)
 	end
 
 	-- update the timer
-	MonkeyQuest.m_fTimeSinceRefresh = MonkeyQuest.m_fTimeSinceRefresh + arg1;
+	MonkeyQuest.m_fTimeSinceRefresh = MonkeyQuest.m_fTimeSinceRefresh + elapsed;
 	
 	-- if it's been more than MONKEYQUEST_DELAY seconds and we need to process a dropped QUEST_LOG_UPDATE
 	if (MonkeyQuest.m_fTimeSinceRefresh > MONKEYQUEST_DELAY and MonkeyQuest.m_bNeedRefresh == true) then
@@ -107,7 +107,7 @@ function MonkeyQuest_OnQuestLogUpdate()
 end
 
 -- OnEvent Function
-function MonkeyQuest_OnEvent(event)
+function MonkeyQuest_OnEvent(self, event, ...)
 
     if (event == 'VARIABLES_LOADED') then
         -- this event gets called when the variables are loaded
@@ -205,19 +205,19 @@ function MonkeyQuest_OnEvent(event)
 end
 
 -- this function is called when the frame should be dragged around
-function MonkeyQuest_OnMouseDown(arg1)
+function MonkeyQuest_OnMouseDown(self, button)
 	-- if not loaded yet then get out
 	if (MonkeyQuest.m_bLoaded == false) then
 		return;
 	end
 	
 	-- left button moves the frame around
-	if (arg1 == "LeftButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked == false) then
+	if (button == "LeftButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked == false) then
 		MonkeyQuestFrame:StartMoving();
 	end
 	
 	-- right button on the title or frame opens up the MonkeyBuddy, if it's there
-	if (arg1 == "RightButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick == true) then
+	if (button == "RightButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick == true) then
 		if (MonkeyBuddyFrame ~= nil) then
 			MonkeyBuddy_ToggleDisplay()
 		end
@@ -225,13 +225,13 @@ function MonkeyQuest_OnMouseDown(arg1)
 end
 
 -- this function is called when the frame is stopped being dragged around
-function MonkeyQuest_OnMouseUp(arg1)
+function MonkeyQuest_OnMouseUp(self, button)
 	-- if not loaded yet then get out
 	if (MonkeyQuest.m_bLoaded == false) then
 		return;
 	end
 	
-	if (arg1 == "LeftButton") then
+	if (button == "LeftButton") then
 		MonkeyQuestFrame:StopMovingOrSizing();
 		
 		-- save the position
@@ -292,14 +292,14 @@ function MonkeyQuestCloseButton_OnClick()
 	MonkeyQuest_Hide();
 end
 
-function MonkeyQuestCloseButton_OnEnter()
+function MonkeyQuestCloseButton_OnEnter(self, motion)
 	-- no noob tip?
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
 		return;
 	end
 
 	-- put the tool tip in the default position
-	GameTooltip:SetOwner(this, "ANCHOR_TOPRIGHT");
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
 
 	-- set the tool tip text
 	GameTooltip:SetText(MONKEYQUEST_NOOBTIP_HEADER, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
@@ -328,14 +328,14 @@ function MonkeyQuestMinimizeButton_OnClick()
 	MonkeyQuest_Refresh();
 end
 
-function MonkeyQuestMinimizeButton_OnEnter()
+function MonkeyQuestMinimizeButton_OnEnter(self, motion)
 	-- no noob tip?
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
 		return;
 	end
 
 	-- put the tool tip in the default position
-	GameTooltip:SetOwner(this, "ANCHOR_TOPRIGHT");
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
 
 	-- set the tool tip text
 	GameTooltip:SetText(MONKEYQUEST_NOOBTIP_HEADER, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
@@ -348,14 +348,14 @@ function MonkeyQuestMinimizeButton_OnEnter()
 	GameTooltip:Show();
 end
 
-function MonkeyQuestShowHiddenCheckButton_OnClick()
+function MonkeyQuestShowHiddenCheckButton_OnClick(self, button, down)
 
 	-- if not loaded yet then get out
 	if (MonkeyQuest.m_bLoaded == false) then
 		return;
 	end
 
-	if (this:GetChecked()) then
+	if (self:GetChecked()) then
 		PlaySound("igMainMenuOptionCheckBoxOff");
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = true;
 	else
@@ -370,7 +370,7 @@ function MonkeyQuestShowHiddenCheckButton_OnClick()
 	MonkeyQuest_Refresh();
 end
 
-function MonkeyQuestShowHiddenCheckButton_OnEnter()
+function MonkeyQuestShowHiddenCheckButton_OnEnter(self, motion)
 
 	-- no noob tip?
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
@@ -378,11 +378,11 @@ function MonkeyQuestShowHiddenCheckButton_OnEnter()
 	end
 
 	-- put the tool tip in the default position
-	GameTooltip:SetOwner(this, "ANCHOR_TOPRIGHT");
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
 
 	-- set the tool tip text
 	GameTooltip:SetText(MONKEYQUEST_NOOBTIP_HEADER, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
-	if (this:GetChecked()) then
+	if (self:GetChecked()) then
 		GameTooltip:AddLine(MONKEYQUEST_NOOBTIP_HIDEALLHIDDEN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
 	else
 		GameTooltip:AddLine(MONKEYQUEST_NOOBTIP_SHOWALLHIDDEN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
@@ -1218,13 +1218,13 @@ function MonkeyQuest_GetCompletenessColorStr(iNumItems, iNumNeeded)
 end
 
 -- when the mouse goes over the main frame, this gets called
-function MonkeyQuestTitle_OnEnter()
+function MonkeyQuestTitle_OnEnter(self, motion)
 	-- noob tip?
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == true) then
 
 		-- put the tool tip in the specified position
 		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
-			GameTooltip_SetDefaultAnchor(GameTooltip, this);
+			GameTooltip_SetDefaultAnchor(GameTooltip, self);
 		else
 			GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
 		end
@@ -1239,7 +1239,7 @@ function MonkeyQuestTitle_OnEnter()
 	end
 
 	-- put the tool tip in the default position
-	GameTooltip_SetDefaultAnchor(GameTooltip, this);
+	GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	
 	-- set the tool tip text
 	GameTooltip:SetText(MONKEYQUEST_TITLE_VERSION, MONKEYLIB_TITLE_COLOUR.r, MONKEYLIB_TITLE_COLOUR.g, MONKEYLIB_TITLE_COLOUR.b, 1);
@@ -1248,19 +1248,19 @@ function MonkeyQuestTitle_OnEnter()
 
 end
 
-function MonkeyQuestButton_OnLoad()
-	this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+function MonkeyQuestButton_OnLoad(self)
+	self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 end
 
-function MonkeyQuestButton_OnClick(button)
+function MonkeyQuestButton_OnClick(self, button, down)
 
-	local strQuestLink = GetQuestLink(this.m_iQuestIndex);
-	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(this.m_iQuestIndex);
+	local strQuestLink = GetQuestLink(self.m_iQuestIndex);
+	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(self.m_iQuestIndex);
 
 	
 	if (isHeader) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[getglobal("MonkeyQuestHideButton" .. this.id).m_strQuestLogTitleText].m_bChecked = 
-			not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[getglobal("MonkeyQuestHideButton" .. this.id).m_strQuestLogTitleText].m_bChecked;
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[getglobal("MonkeyQuestHideButton" .. self.id).m_strQuestLogTitleText].m_bChecked =
+			not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[getglobal("MonkeyQuestHideButton" .. self.id).m_strQuestLogTitleText].m_bChecked;
 		
 		MonkeyQuest_Refresh();
 		MonkeyQuestFrame:Show();
@@ -1331,7 +1331,7 @@ function MonkeyQuestButton_OnClick(button)
 			local tmpQuestLogSelection = GetQuestLogSelection();
 
 			-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
-			SelectQuestLogEntry(this.m_iQuestIndex);
+			SelectQuestLogEntry(self.m_iQuestIndex);
 
 			if (GetNumQuestLeaderBoards() > 0) then
 				for i=1, GetNumQuestLeaderBoards(), 1 do
@@ -1364,7 +1364,7 @@ function MonkeyQuestButton_OnClick(button)
 		-- what button was it?
 		if (button == "LeftButton") then
 			-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
-			SelectQuestLogEntry(this.m_iQuestIndex);
+			SelectQuestLogEntry(self.m_iQuestIndex);
 			
 			-- try and share this quest with party members
 			if (GetQuestLogPushable() and GetNumPartyMembers() > 0) then
@@ -1376,7 +1376,7 @@ function MonkeyQuestButton_OnClick(button)
 			--local tmpQuestLogSelection = GetQuestLogSelection();
 
 			-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
-			SelectQuestLogEntry(this.m_iQuestIndex);
+			SelectQuestLogEntry(self.m_iQuestIndex);
 			
 			SetAbandonQuest();
 			StaticPopup_Show("ABANDON_QUEST", GetAbandonQuestName());
@@ -1393,12 +1393,12 @@ function MonkeyQuestButton_OnClick(button)
 		-- if MonkeyQuestLog is installed, open that instead
 		if (MkQL_SetQuest ~= nil) then
 			if (MkQL_Main_Frame:IsVisible()) then
-				if (MkQL_global_iCurrQuest == this.m_iQuestIndex) then
+				if (MkQL_global_iCurrQuest == self.m_iQuestIndex) then
 					MkQL_Main_Frame:Hide();
 				return;
 				end
 			end
-			MkQL_SetQuest(this.m_iQuestIndex);
+			MkQL_SetQuest(self.m_iQuestIndex);
 			return;
 		end
 
@@ -1406,8 +1406,8 @@ function MonkeyQuestButton_OnClick(button)
 		ShowUIPanel(QuestLogFrame);
 
 		-- actually select the quest entry
-		SelectQuestLogEntry(this.m_iQuestIndex);
-		QuestLog_SetSelection(this.m_iQuestIndex);
+		SelectQuestLogEntry(self.m_iQuestIndex);
+		QuestLog_SetSelection(self.m_iQuestIndex);
 
 		-- update the real quest log
 		QuestLog_Update();
@@ -1417,13 +1417,13 @@ function MonkeyQuestButton_OnClick(button)
 	end
 end
 
-function MonkeyQuestButton_OnEnter()
+function MonkeyQuestButton_OnEnter(self, motion)
 	
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "NONE") then
 		return;
 	end
 
-	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(this.m_iQuestIndex);
+	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(self.m_iQuestIndex);
 
 	if (strQuestLogTitleText == nil) then
 		return;
@@ -1437,7 +1437,7 @@ function MonkeyQuestButton_OnEnter()
 		
 		-- put the tool tip in the specified position
 		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
-			GameTooltip_SetDefaultAnchor(GameTooltip, this);
+			GameTooltip_SetDefaultAnchor(GameTooltip, self);
 		else
 			GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
 		end
@@ -1452,7 +1452,7 @@ function MonkeyQuestButton_OnEnter()
 	
 	-- put the tool tip in the specified position
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
-		GameTooltip_SetDefaultAnchor(GameTooltip, this);
+		GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
 		GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
 	end
@@ -1475,7 +1475,7 @@ function MonkeyQuestButton_OnEnter()
 	
 	-- set the tool tip text
 	GameTooltip:SetText(strQuestLogTitleText, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
-	GameTooltip:AddLine(this.m_strQuestObjectives, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1);
+	GameTooltip:AddLine(self.m_strQuestObjectives, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1);
 	GameTooltip:AddLine(strQuestTag, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
 	
 	
@@ -1484,7 +1484,7 @@ function MonkeyQuestButton_OnEnter()
 	local isOnQuest, i;
 	
 	for i = 1, iNumPartyMembers do
-		isOnQuest = IsUnitOnQuest(this.m_iQuestIndex, "party" .. i);
+		isOnQuest = IsUnitOnQuest(self.m_iQuestIndex, "party" .. i);
 		
 		if (isOnQuest and isOnQuest == 1) then
 			-- this member is on the quest
@@ -1502,7 +1502,7 @@ function MonkeyQuestHideButton_OnLoad()
 
 end
 
-function MonkeyQuestHideButton_OnEnter()
+function MonkeyQuestHideButton_OnEnter(self, motion)
 	-- no noob tip?
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
 		return;
@@ -1510,7 +1510,7 @@ function MonkeyQuestHideButton_OnEnter()
 	
 	-- put the tool tip in the specified position
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
-		GameTooltip_SetDefaultAnchor(GameTooltip, this);
+		GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
 		GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
 	end
@@ -1523,21 +1523,21 @@ function MonkeyQuestHideButton_OnEnter()
 
 end
 
-function MonkeyQuestHideButton_OnClick()
+function MonkeyQuestHideButton_OnClick(self, button, down)
 	-- if not loaded yet then get out
 	if (MonkeyQuest.m_bLoaded == false) then
 		return;
 	end
 
-	if (this:GetChecked()) then
+	if (self:GetChecked()) then
 		PlaySound("igMainMenuOptionCheckBoxOff");
 		
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[this.m_strQuestLogTitleText].m_bChecked = true;
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[self.m_strQuestLogTitleText].m_bChecked = true;
 		
 	else
 		PlaySound("igMainMenuOptionCheckBoxOn");
 		
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[this.m_strQuestLogTitleText].m_bChecked = false;
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[self.m_strQuestLogTitleText].m_bChecked = false;
 	end
 
 	MonkeyQuest_Refresh();
