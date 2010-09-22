@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\FrameXML\UI.xsd">
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\FrameXML\UI.xsd">
 	<Script file="MonkeyQuestDefs.lua"/>
 	<Script file="localization.lua"/>
 	<Script file="MonkeyQuest.lua"/>
@@ -25,14 +25,14 @@
 		</Layers>
 		<Scripts>
 			<OnLoad>
-				MonkeyQuestButton_OnLoad();
+				MonkeyQuestButton_OnLoad(self);
 			</OnLoad>
 			<OnClick>
-				MonkeyQuestButton_OnClick(arg1);
+				MonkeyQuestButton_OnClick(self, button, down);
 			</OnClick>
 			<OnEnter>
 				MonkeyQuest_OnEnter();
-				MonkeyQuestButton_OnEnter();
+				MonkeyQuestButton_OnEnter(self, motion);
 			</OnEnter>
 			<OnLeave>
 				MonkeyQuest_OnLeave();
@@ -56,11 +56,11 @@
 				MonkeyQuestHideButton_OnLoad();
 			</OnLoad>
 			<OnClick>
-				MonkeyQuestHideButton_OnClick();
+				MonkeyQuestHideButton_OnClick(self, button, down);
 			</OnClick>
 			<OnEnter>
 				MonkeyQuest_OnEnter();
-				MonkeyQuestHideButton_OnEnter();
+				MonkeyQuestHideButton_OnEnter(self, motion);
 			</OnEnter>
 			<OnLeave>
 				MonkeyQuest_OnLeave();
@@ -115,17 +115,17 @@
 				<Scripts>
 					<OnEnter>
 						MonkeyQuest_OnEnter();
-						MonkeyQuestTitle_OnEnter();
+						MonkeyQuestTitle_OnEnter(self, motion);
 					</OnEnter>
 					<OnLeave>
 						MonkeyQuest_OnLeave();
 						GameTooltip:Hide();
 					</OnLeave>
 					<OnMouseDown>
-						MonkeyQuest_OnMouseDown(arg1);
+						MonkeyQuest_OnMouseDown(self, button);
 					</OnMouseDown>
 					<OnMouseUp>
-						MonkeyQuest_OnMouseUp(arg1);
+						MonkeyQuest_OnMouseUp(self, button);
 					</OnMouseUp>
 				</Scripts>
 			</Button>
@@ -751,7 +751,7 @@
 				<Scripts>
 					<OnEnter>
 						MonkeyQuest_OnEnter();
-						MonkeyQuestCloseButton_OnEnter();
+						MonkeyQuestCloseButton_OnEnter(self, motion);
 					</OnEnter>
 					<OnLeave>
 						MonkeyQuest_OnLeave();
@@ -780,7 +780,7 @@
 				<Scripts>
 					<OnEnter>
 						MonkeyQuest_OnEnter();
-						MonkeyQuestMinimizeButton_OnEnter();
+						MonkeyQuestMinimizeButton_OnEnter(self, motion);
 					</OnEnter>
 					<OnLeave>
 						MonkeyQuest_OnLeave();
@@ -809,14 +809,14 @@
 				<Scripts>
 					<OnEnter>
 						MonkeyQuest_OnEnter();
-						MonkeyQuestShowHiddenCheckButton_OnEnter();
+						MonkeyQuestShowHiddenCheckButton_OnEnter(self, motion);
 					</OnEnter>
 					<OnLeave>
 						MonkeyQuest_OnLeave();
 						GameTooltip:Hide();
 					</OnLeave>
 					<OnClick>
-						MonkeyQuestShowHiddenCheckButton_OnClick();
+						MonkeyQuestShowHiddenCheckButton_OnClick(self, button, down);
 					</OnClick>
 				</Scripts>
 			</CheckButton>
@@ -824,19 +824,19 @@
 		</Frames>
 		<Scripts>
 			<OnLoad>
-				MonkeyQuest_OnLoad();
+				MonkeyQuest_OnLoad(self);
 			</OnLoad>
 			<OnUpdate>
-				MonkeyQuest_OnUpdate(arg1);
+				MonkeyQuest_OnUpdate(self, elapsed);
 			</OnUpdate>
 			<OnEvent>
-				MonkeyQuest_OnEvent(event, arg1);
+				MonkeyQuest_OnEvent(self, event, ...);
 			</OnEvent>
 			<OnMouseDown>
-				MonkeyQuest_OnMouseDown(arg1);
+				MonkeyQuest_OnMouseDown(self, button);
 			</OnMouseDown>
 			<OnMouseUp>
-				MonkeyQuest_OnMouseUp(arg1);
+				MonkeyQuest_OnMouseUp(self, button);
 			</OnMouseUp>
 			<OnEnter>
 				MonkeyQuest_OnEnter();
