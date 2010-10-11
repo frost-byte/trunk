@@ -1,4 +1,4 @@
-function MonkeyQuestInit_LoadConfig()
+﻿function MonkeyQuestInit_LoadConfig()
 
 	-- double check that we aren't already loaded
 	if (MonkeyQuest.m_bLoaded == true) then
@@ -260,7 +260,7 @@ function MonkeyQuestInit_CleanQuestList()
 		-- here's a good place to create the objective list
 		if (GetNumQuestLeaderBoards() > 0) then
 			for ii = 1, GetNumQuestLeaderBoards(), 1 do
-				--local string = getglobal("QuestLogObjective"..ii);
+				--local string = _G["QuestLogObjective"..ii];
 				local strLeaderBoardText, strType, iFinished = GetQuestLogLeaderBoard(ii);
 				
 				MonkeyQuest_AddQuestItemToList(strLeaderBoardText);
@@ -440,7 +440,7 @@ function MonkeyQuestInit_SetButtonFonts(strFontName, iFontHeight)
 
 	-- set the font for all buttons
 	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
-		getglobal("MonkeyQuestButton" .. i .. "Text"):SetFont(strFontName, iFontHeight);
+		_G["MonkeyQuestButton" .. i .. "Text"]:SetFont(strFontName, iFontHeight);
 	end
 end
 

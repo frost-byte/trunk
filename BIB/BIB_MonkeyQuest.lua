@@ -149,7 +149,7 @@ end
 --This function is in every plugin always the same
 function BIB_MonkeyQuestButton_OnRightClick(self, button, down)
 	if (button == "RightButton") then
-		ToggleDropDownMenu(1, nil, getglobal(self:GetName().."RightClickMenu"), self:GetName(), 0, 0);
+		ToggleDropDownMenu(1, nil, _G[self:GetName().."RightClickMenu"], self:GetName(), 0, 0);
 		GameTooltip_SetDefaultAnchor(GameTooltip, UIParent);
 		GameTooltip:Hide();
 	end

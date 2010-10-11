@@ -1,4 +1,4 @@
--- this function catches the aftooltip extreme function for setting the mouse over unit's name
+﻿-- this function catches the aftooltip extreme function for setting the mouse over unit's name
 function MonkeyQuest_NEW_aftt_setName(unit)
 
     -- call the original aftt setName function
@@ -33,14 +33,14 @@ function MonkeyQuest_SearchTooltip()
         return false;
     end
     
-    if (not getglobal('GameTooltipTextLeft1'):IsVisible()) then
+    if (not _G['GameTooltipTextLeft1']:IsVisible()) then
         -- no more tooltip text, get out
         return false;
     end
 
     -- check the string isn't nil
-    if (getglobal('GameTooltipTextLeft1'):GetText() ~= nil) then
-        if (MonkeyQuest_SearchQuestListItem(getglobal('GameTooltipTextLeft1'):GetText()) == true) then
+    if (_G['GameTooltipTextLeft1']:GetText() ~= nil) then
+        if (MonkeyQuest_SearchQuestListItem(_G['GameTooltipTextLeft1']:GetText()) == true) then
             return true;
         end
     end
@@ -94,7 +94,7 @@ function MonkeyQuest_SearchQuestListItem(strSearch)
             
                 
             -- resize the tootip (thanks Turan's AuctionIt)
-            length = getglobal(GameTooltip:GetName() .. "TextLeft" .. GameTooltip:NumLines()):GetStringWidth();
+            length = _G[GameTooltip:GetName() .. "TextLeft" .. GameTooltip:NumLines()]:GetStringWidth();
             -- Give the text some border space on the right side of the tooltip.
             length = length + 22;
         
@@ -123,15 +123,15 @@ function MonkeyQuest_SearchTooltipForRelevantQuest()
         return false;
     end
     
-    if (not getglobal('GameTooltipTextLeft1'):IsVisible()) then
+    if (not _G['GameTooltipTextLeft1']:IsVisible()) then
         -- no more tooltip text, get out
         return false;
     end
 
     -- check the string isn't nil
-    if (getglobal('GameTooltipTextLeft1'):GetText() ~= nil) then
+    if (_G['GameTooltipTextLeft1']:GetText() ~= nil) then
 
-        strRelevantQuest = MonkeyQuest_SearchQuestDetails(getglobal('GameTooltipTextLeft1'):GetText());
+        strRelevantQuest = MonkeyQuest_SearchQuestDetails(_G['GameTooltipTextLeft1']:GetText());
 
         if (strRelevantQuest ~= nil) then
 
@@ -141,7 +141,7 @@ function MonkeyQuest_SearchTooltipForRelevantQuest()
 
 
             -- resize the tootip (thanks Turan's AuctionIt)
-            length = getglobal(GameTooltip:GetName() .. "TextLeft" .. GameTooltip:NumLines()):GetStringWidth();
+            length = _G[GameTooltip:GetName() .. "TextLeft" .. GameTooltip:NumLines()]:GetStringWidth();
             -- Give the text some border space on the right side of the tooltip.
             length = length + 22;
 
