@@ -1008,6 +1008,10 @@ end
 
 -- does a decent job of figuring out if the quest objective is an item and if so adds it to the list
 function MonkeyQuest_AddQuestItemToList(strLeaderBoardText)
+	if (not strLeaderBoardText) then
+		return;
+	end
+	
 	local i, j, strItemName, iNumItems, iNumNeeded = string.find(strLeaderBoardText, "(.*):%s*([-%d]+)%s*/%s*([-%d]+)%s*$");
 	
 	if (iNumItems == nil) then
