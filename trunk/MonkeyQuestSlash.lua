@@ -1,4 +1,4 @@
--- define the dialog box for reseting config
+﻿-- define the dialog box for reseting config
 StaticPopupDialogs["MONKEYQUEST_RESET"] = {
 	text = TEXT(MONKEYQUEST_CONFIRM_RESET),
 	button1 = TEXT(OKAY),
@@ -941,7 +941,7 @@ function MonkeyQuestSlash_CmdSetQuestPadding(iPadding)
 
 	-- loop through ALL the quest button and apply the padding
 	for i = 2, MONKEYQUEST_MAX_BUTTONS, 1 do
-		getglobal("MonkeyQuestButton" .. i):SetPoint("TOPLEFT", "MonkeyQuestButton" .. (i - 1), "BOTTOMLEFT", 0, -iPadding);
+		_G["MonkeyQuestButton" .. i]:SetPoint("TOPLEFT", "MonkeyQuestButton" .. (i - 1), "BOTTOMLEFT", 0, -iPadding);
 	end
 
 	-- resize MonkeyQuest

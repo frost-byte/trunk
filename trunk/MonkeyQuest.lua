@@ -428,8 +428,8 @@ function MonkeyQuest_SetFrameAlpha(iAlpha)
 	MonkeyQuestMinimizeButton:SetAlpha( iAlpha );
 	MonkeyQuestShowHiddenCheckButton:SetAlpha( iAlpha );
 	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
-		getglobal("MonkeyQuestButton" .. i):SetAlpha( iAlpha );
-		getglobal("MonkeyQuestHideButton" .. i):SetAlpha( iAlpha );
+		_G["MonkeyQuestButton" .. i]:SetAlpha( iAlpha );
+		_G["MonkeyQuestHideButton" .. i]:SetAlpha( iAlpha );
 	end
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -560,12 +560,12 @@ function MonkeyQuest_Refresh(MBDaily)
 
 	-- hide all the text buttons
 	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
-		getglobal("MonkeyQuestButton" .. i .. "Text"):SetText("");
-		getglobal("MonkeyQuestButton" .. i .. "Text"):Hide();
-		getglobal("MonkeyQuestButton" .. i):Hide();
-		getglobal("MonkeyQuestHideButton" .. i):Hide();
-		getglobal("MonkeyQuestButton" .. i .. "Text"):SetWidth(MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8);
-		getglobal("MonkeyQuestButton" .. i .. "Text"):SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
+		_G["MonkeyQuestButton" .. i .. "Text"]:SetText("");
+		_G["MonkeyQuestButton" .. i .. "Text"]:Hide();
+		_G["MonkeyQuestButton" .. i]:Hide();
+		_G["MonkeyQuestHideButton" .. i]:Hide();
+		_G["MonkeyQuestButton" .. i .. "Text"]:SetWidth(MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8);
+		_G["MonkeyQuestButton" .. i .. "Text"]:SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
 	end
 
 
@@ -609,18 +609,18 @@ function MonkeyQuest_Refresh(MBDaily)
 								format(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderOpenColour .. "%s|r",
 									"- " .. strQuestLogTitleText) .. "\n";
 								
-							getglobal("MonkeyQuestButton" .. iButtonId .. "Text"):SetText(strMonkeyQuestBody);
-							getglobal("MonkeyQuestButton" .. iButtonId .. "Text"):Show();
-							getglobal("MonkeyQuestButton" .. iButtonId):Show();
+							_G["MonkeyQuestButton" .. iButtonId .. "Text"]:SetText(strMonkeyQuestBody);
+							_G["MonkeyQuestButton" .. iButtonId .. "Text"]:Show();
+							_G["MonkeyQuestButton" .. iButtonId]:Show();
 
 							-- set the bg colour
-							getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(0.0, 0.0, 0.0, 0.0);
+							_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(0.0, 0.0, 0.0, 0.0);
 			
-							getglobal("MonkeyQuestButton" .. iButtonId).m_iQuestIndex = i;
-							getglobal("MonkeyQuestButton" .. iButtonId).id = iButtonId;
+							_G["MonkeyQuestButton" .. iButtonId].m_iQuestIndex = i;
+							_G["MonkeyQuestButton" .. iButtonId].id = iButtonId;
 			
-							getglobal("MonkeyQuestHideButton" .. iButtonId):Hide();
-							getglobal("MonkeyQuestHideButton" .. iButtonId).m_strQuestLogTitleText = strQuestLogTitleText;
+							_G["MonkeyQuestHideButton" .. iButtonId]:Hide();
+							_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
 							
 							iButtonId = iButtonId + 1;
 			
@@ -634,18 +634,18 @@ function MonkeyQuest_Refresh(MBDaily)
 								format(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderClosedColour .. "%s|r",
 									"+ " .. strQuestLogTitleText) .. "\n";
 								
-							getglobal("MonkeyQuestButton" .. iButtonId .. "Text"):SetText(strMonkeyQuestBody);
-							getglobal("MonkeyQuestButton" .. iButtonId .. "Text"):Show();
-							getglobal("MonkeyQuestButton" .. iButtonId):Show();
+							_G["MonkeyQuestButton" .. iButtonId .. "Text"]:SetText(strMonkeyQuestBody);
+							_G["MonkeyQuestButton" .. iButtonId .. "Text"]:Show();
+							_G["MonkeyQuestButton" .. iButtonId]:Show();
 
 							-- set the bg colour
-							getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(0.0, 0.0, 0.0, 0.0);
+							_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(0.0, 0.0, 0.0, 0.0);
 			
-							getglobal("MonkeyQuestButton" .. iButtonId).m_iQuestIndex = i;
-							getglobal("MonkeyQuestButton" .. iButtonId).id = iButtonId;
+							_G["MonkeyQuestButton" .. iButtonId].m_iQuestIndex = i;
+							_G["MonkeyQuestButton" .. iButtonId].id = iButtonId;
 							
-							getglobal("MonkeyQuestHideButton" .. iButtonId):Hide();
-							getglobal("MonkeyQuestHideButton" .. iButtonId).m_strQuestLogTitleText = strQuestLogTitleText;
+							_G["MonkeyQuestHideButton" .. iButtonId]:Hide();
+							_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
 			
 							iButtonId = iButtonId + 1;
 			
@@ -664,19 +664,19 @@ function MonkeyQuest_Refresh(MBDaily)
 						
 						-- the user has this quest checked off or he's showing all quests anyways, so we show it
 						if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden ) then
-							getglobal("MonkeyQuestHideButton" .. iButtonId):Show();
+							_G["MonkeyQuestHideButton" .. iButtonId]:Show();
 						else
-							getglobal("MonkeyQuestHideButton" .. iButtonId):Hide();
+							_G["MonkeyQuestHideButton" .. iButtonId]:Hide();
 						end
 						
 						-- update hide quests buttons
 						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked == true) then
-							getglobal("MonkeyQuestHideButton" .. iButtonId):SetChecked(1);
+							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(1);
 						else
-							getglobal("MonkeyQuestHideButton" .. iButtonId):SetChecked(0);
+							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(0);
 						end
 						
-						getglobal("MonkeyQuestHideButton" .. iButtonId).m_strQuestLogTitleText = strQuestLogTitleText;
+						_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
 						
 
 
@@ -786,7 +786,7 @@ function MonkeyQuest_Refresh(MBDaily)
 							itemButton = _G["MQWatchFrameItem"..watchItemIndex];
 							if ( not itemButton ) then
 								MQWATCHFRAME_NUM_ITEMS = watchItemIndex;
-								itemButton = CreateFrame("BUTTON", "MQWatchFrameItem" .. watchItemIndex, getglobal("MonkeyQuestFrame"), "WatchFrameItemButtonTemplate");
+								itemButton = CreateFrame("BUTTON", "MQWatchFrameItem" .. watchItemIndex, _G["MonkeyQuestFrame"], "WatchFrameItemButtonTemplate");
 							end
 							itemButton:SetScale(0.7)
 							itemButton:Show();
@@ -798,18 +798,18 @@ function MonkeyQuest_Refresh(MBDaily)
 							itemButton.rangeTimer = -1;
 							if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == true ) then
 								if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true ) then
-									itemButton:SetPoint( "TOPRIGHT", getglobal("MonkeyQuestHideButton" .. iButtonId), "TOPLEFT", -12, 0);
+									itemButton:SetPoint( "TOPRIGHT", _G["MonkeyQuestHideButton" .. iButtonId], "TOPLEFT", -12, 0);
 								else
-									itemButton:SetPoint( "TOPRIGHT", getglobal("MonkeyQuestButton" .. iButtonId), "TOPLEFT" );
+									itemButton:SetPoint( "TOPRIGHT", _G["MonkeyQuestButton" .. iButtonId], "TOPLEFT" );
 								end
 							else
-								itemButton:SetPoint( "TOPLEFT", getglobal("MonkeyQuestButton" .. iButtonId), "TOPRIGHT", 12, 0);
+								itemButton:SetPoint( "TOPLEFT", _G["MonkeyQuestButton" .. iButtonId], "TOPRIGHT", 12, 0);
 							end
 						end
 		
 						if (GetNumQuestLeaderBoards() > 0) then
 							for ii=1, GetNumQuestLeaderBoards(), 1 do
-								--local string = getglobal("QuestLogObjective"..ii);
+								--local string = _G["QuestLogObjective"..ii];
 								local strLeaderBoardText, strType, iFinished = GetQuestLogLeaderBoard(ii);
 								
 								MonkeyQuest_AddQuestItemToList(strLeaderBoardText);
@@ -916,12 +916,12 @@ function MonkeyQuest_Refresh(MBDaily)
 						end
 			
 						-- finally set the text
-						getglobal("MonkeyQuestButton" .. iButtonId .. "Text"):SetText(strMonkeyQuestBody);
-						getglobal("MonkeyQuestButton" .. iButtonId .. "Text"):Show();
-						getglobal("MonkeyQuestButton" .. iButtonId):Show();
+						_G["MonkeyQuestButton" .. iButtonId .. "Text"]:SetText(strMonkeyQuestBody);
+						_G["MonkeyQuestButton" .. iButtonId .. "Text"]:Show();
+						_G["MonkeyQuestButton" .. iButtonId]:Show();
 
 						-- set the bg colour
-						getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(0.0, 0.0, 0.0, 0.0);
+						_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(0.0, 0.0, 0.0, 0.0);
 
 						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight) then
 							local strSubZoneText = string.lower(GetSubZoneText());
@@ -932,15 +932,15 @@ function MonkeyQuest_Refresh(MBDaily)
 	
 									local a, r, g, b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strZoneHighlightColour);
 	
-									-- getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
-									getglobal("MonkeyQuestButton" .. iButtonId .. "Texture"):SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha);
+									-- _G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
+									_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha);
 								end
 							end
 						end
 
 			
-						getglobal("MonkeyQuestButton" .. iButtonId).m_iQuestIndex = i;
-						getglobal("MonkeyQuestButton" .. iButtonId).m_strQuestObjectives = strQuestObjectives;
+						_G["MonkeyQuestButton" .. iButtonId].m_iQuestIndex = i;
+						_G["MonkeyQuestButton" .. iButtonId].m_strQuestObjectives = strQuestObjectives;
 			
 						iButtonId = iButtonId + 1;
 			
@@ -957,7 +957,7 @@ function MonkeyQuest_Refresh(MBDaily)
 
 	
 	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
-		getglobal("MonkeyQuestButton" .. i .. "Text"):SetWidth(MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8);
+		_G["MonkeyQuestButton" .. i .. "Text"]:SetWidth(MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8);
 	end
 	
 	for i = watchItemIndex + 1, MQWATCHFRAME_NUM_ITEMS do
@@ -995,7 +995,7 @@ function MonkeyQuest_RefreshQuestItemList()
 
 			if (GetNumQuestLeaderBoards() > 0) then
 				for ii=1, GetNumQuestLeaderBoards(), 1 do
-					--local string = getglobal("QuestLogObjective"..ii);
+					--local string = _G["QuestLogObjective"..ii];
 					local strLeaderBoardText, strType, iFinished = GetQuestLogLeaderBoard(ii);
 					
 					MonkeyQuest_AddQuestItemToList(strLeaderBoardText);
@@ -1051,8 +1051,8 @@ function MonkeyQuest_Resize()
 	MonkeyQuestTitleButton:SetHeight(MonkeyQuestTitleText:GetHeight());
 
 	for i = 1, MonkeyQuest.m_iNumQuestButtons, 1 do
-		text = getglobal("MonkeyQuestButton" .. i .. "Text");
-		button = getglobal("MonkeyQuestButton" .. i);
+		text = _G["MonkeyQuestButton" .. i .. "Text"];
+		button = _G["MonkeyQuestButton" .. i];
 		
 		if (text:IsVisible()) then
 			text:SetWidth(iTextWidth);
@@ -1259,8 +1259,8 @@ function MonkeyQuestButton_OnClick(self, button, down)
 
 	
 	if (isHeader) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[getglobal("MonkeyQuestHideButton" .. self.id).m_strQuestLogTitleText].m_bChecked =
-			not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[getglobal("MonkeyQuestHideButton" .. self.id).m_strQuestLogTitleText].m_bChecked;
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[_G["MonkeyQuestHideButton" .. self.id].m_strQuestLogTitleText].m_bChecked =
+			not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[_G["MonkeyQuestHideButton" .. self.id].m_strQuestLogTitleText].m_bChecked;
 		
 		MonkeyQuest_Refresh();
 		MonkeyQuestFrame:Show();
@@ -1335,7 +1335,7 @@ function MonkeyQuestButton_OnClick(self, button, down)
 
 			if (GetNumQuestLeaderBoards() > 0) then
 				for i=1, GetNumQuestLeaderBoards(), 1 do
-					--local string = getglobal("QuestLogObjective"..ii);
+					--local string = _G["QuestLogObjective"..ii];
 					local strLeaderBoardText, strType, iFinished = GetQuestLogLeaderBoard(i);
 					
 					if (strLeaderBoardText) then
