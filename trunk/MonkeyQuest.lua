@@ -592,6 +592,11 @@ function MonkeyQuest_Refresh(MBDaily)
 				-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
 				SelectQuestLogEntry(i);
 				
+				-- since 4.0.1 some strQuestLogTitleText are nil
+				if (strQuestLogTitleText == nil) then
+					strQuestLogTitleText = MONKEYQUEST_NO_HEADER
+				end
+				
 				-- double check this quest is in the hidden list, if not, it's a new quest
 				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] == nil) then
 					MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] = {};
