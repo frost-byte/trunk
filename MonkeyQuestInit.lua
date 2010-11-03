@@ -219,6 +219,11 @@ function MonkeyQuestInit_CleanQuestList()
 		-- strQuestTag				the tag on the quest (ex. COMPLETED)
 		local strQuestLogTitleText, strQuestLevel, strQuestTag, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 		
+		-- since 4.0.1 some strQuestLogTitleText are nil
+		if (strQuestLogTitleText == nil) then
+			strQuestLogTitleText = MONKEYQUEST_NO_HEADER
+		end
+		
 		MonkeyQuest.m_aQuestList[strQuestLogTitleText] = {};
 		
 		-- put the entry in the hidden list if it's not there already
