@@ -1,6 +1,6 @@
 ﻿-- Not translations
 MONKEYQUEST_TITLE						= "MonkeyQuest"
-MONKEYQUEST_VERSION						= "2.9.10"
+MONKEYQUEST_VERSION						= "2.9.11"
 MONKEYQUEST_TITLE_VERSION				= MONKEYQUEST_TITLE .. " v" .. MONKEYQUEST_VERSION
 MONKEYQUEST_INFO_COLOUR					= "|cffffff00"
 MONKEYQUEST_CHAT_COLOUR					= "|cff00ff00"
@@ -12,6 +12,7 @@ MONKEYQUEST_LOADED_MSG					= MONKEYQUEST_INFO_COLOUR .. MONKEYQUEST_TITLE .. " v
 MONKEYQUEST_OPTIONS1					= "Please install MonkeyBuddy to configure your MonkeyQuest easily."
 MONKEYQUEST_OPTIONS2					= "\124TInterface\\Icons\\Trade_Engineering:0\124t MonkeyBuddy is currently not installed."
 
+MONKEYQUEST_NO_HEADER					= "No Header"
 MONKEYQUEST_QUEST_DONE					= "done"
 MONKEYQUEST_QUEST_FAILED				= "failed"
 MONKEYQUEST_CONFIRM_RESET				= "Okay to reset " .. MONKEYQUEST_TITLE .. " settings to default values?"
@@ -261,6 +262,7 @@ MONKEYQUEST_LOADED_MSG					= MONKEYQUEST_INFO_COLOUR .. MONKEYQUEST_TITLE .. " v
 MONKEYQUEST_OPTIONS1					= "Bitte installiere MonkeyBuddy um dein MonkeyQuest einzustellen."
 MONKEYQUEST_OPTIONS2					= "\124TInterface\\Icons\\Trade_Engineering:0\124t MonkeyBuddy ist derzeit nicht installiert."
 
+MONKEYQUEST_NO_HEADER					= "Keine Region"
 MONKEYQUEST_QUEST_DONE					= "fertig"
 MONKEYQUEST_QUEST_FAILED				= "fehlgeschlagen"
 MONKEYQUEST_CONFIRM_RESET				= "Die Einstellungen von " .. MONKEYQUEST_TITLE .. " wirklich zur\195\188cksetzen?"
