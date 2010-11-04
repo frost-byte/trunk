@@ -254,6 +254,11 @@ function MonkeyQuestInit_CleanQuestList()
 		-- strQuestTag				the tag on the quest (ex. COMPLETED)
 		local strQuestLogTitleText, strQuestLevel, strQuestTag, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 		
+		-- since 4.0.1 some strQuestLogTitleText are nil
+		if (strQuestLogTitleText == nil) then
+			strQuestLogTitleText = MONKEYQUEST_NO_HEADER
+		end
+		
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] = {};
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = 
 			MonkeyQuest.m_aQuestList[strQuestLogTitleText].m_bChecked;
