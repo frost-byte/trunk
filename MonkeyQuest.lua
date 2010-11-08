@@ -1422,7 +1422,17 @@ function MonkeyQuestButton_OnClick(self, button, down)
 		QuestLog_Update();
 
 	elseif (button == "RightButton") then
-		-- TODO: hide the quest
+		if (_G["MonkeyQuestHideButton" .. self.m_iQuestIndex]:GetChecked()) then
+			PlaySound("igMainMenuOptionCheckBoxOff");
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = false;
+		else
+			PlaySound("igMainMenuOptionCheckBoxOn");
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = true;
+		end
+
+		MonkeyQuest_Refresh();
+		MonkeyQuestFrame:Show();
+		MonkeyQuest_Refresh();
 	end
 end
 
