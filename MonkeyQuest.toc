@@ -1,7 +1,7 @@
-﻿## Interface: 40000
-## Title: MonkeyQuest v2.9.13
-## Notes: Displays your quests for quick viewing. (http://www.toctastic.net/)
-## Notes-deDE: Stellt Quests in einer kompakten Uebersicht dar. (http://www.toctastic.net/)
+﻿## Interface: 40100
+## Title: MonkeyQuest v2.9.14
+## Notes: Displays your quests for quick viewing.
+## Notes-deDE: Stellt Quests in einer kompakten Uebersicht dar.
 ## Author: Trentin, Jim-Bim
 ## SavedVariables: MonkeyQuestConfig
 ## Dependencies: MonkeyLibrary
