@@ -799,6 +799,7 @@ function MonkeyQuest_Refresh(MBDaily)
 							itemButton:SetID(i);
 							SetItemButtonTexture(itemButton, item);
 							SetItemButtonCount(itemButton, charges);
+							itemButton.charges = charges;
 							WatchFrameItem_UpdateCooldown(itemButton);
 							itemButton.rangeTimer = -1;
 							if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == true ) then

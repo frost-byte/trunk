@@ -1,5 +1,5 @@
 ﻿## Interface: 40300
-## Title: MonkeyQuest v2.9.16
+## Title: MonkeyQuest v2.9.17
 ## Notes: Displays your quests for quick viewing.
 ## Notes-deDE: Stellt Quests in einer kompakten Uebersicht dar.
 ## Author: Trentin, Jim-Bim
