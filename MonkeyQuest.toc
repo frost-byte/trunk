@@ -5,6 +5,5 @@
 ## Author: Trentin, Jim-Bim
 ## SavedVariables: MonkeyQuestConfig
 ## Dependencies: MonkeyLibrary
-## OptionalDeps: aftt_extreme, BhaldieInfoBar
+## OptionalDeps: aftt_extreme
 MonkeyQuest.xml
-BIB\BIB_MonkeyQuest.xml

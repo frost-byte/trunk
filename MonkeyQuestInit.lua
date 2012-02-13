@@ -168,11 +168,6 @@
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel = MONKEYQUEST_DEFAULT_SHOWQUESTLEVEL;
 	end
 	
-	-- BIB vars
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB = MONKEYQUEST_DEFAULT_LOCKBIB;
-	end
-	
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == nil) then
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
 	end
@@ -183,12 +178,6 @@
 	
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == nil) then
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
-	end
-	
-	-- force unlocked from bib if there is no bib
-	if (not IsAddOnLoaded("BhaldieInfoBar") and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == true) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB = false;
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_TOPLEFT";
 	end
 
 	-- All variables are loaded now
@@ -329,9 +318,6 @@ function MonkeyQuestInit_ResetConfig()
 	
 	-- noob tips
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips = MONKEYQUEST_DEFAULT_SHOWNOOBTIPS;
-	
-	-- BhaldieInfoBar
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB = MONKEYQUEST_DEFAULT_LOCKBIB;
 
 	-- colours
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour = MONKEYQUEST_DEFAULT_QUESTTITLECOLOUR;

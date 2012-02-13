@@ -242,21 +242,10 @@ function MonkeyQuest_OnMouseUp(self, button)
 end
 
 function MonkeyQuest_OnEnter()
-
-	-- BIB support
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == true) then
-		MonkeyQuestFrame:Show();
-	end
 	ShowDetailedControls();
 end
 
 function MonkeyQuest_OnLeave()
-	
-	-- BIB support
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == true) then
-		MonkeyQuest_Hide();
-	end
-
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
 		HideDetailedControls();
 	end
@@ -464,21 +453,6 @@ function MonkeyQuest_Refresh(MBDaily)
 		end
 	end
 	
-	-- BIB bad options check
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == true) then
-		if (BIB_MonkeyQuestButton ~= nil) then
-			if (not BIB_MonkeyQuestButton:IsShown()) then
-				MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB = false;
-				MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_TOPLEFT";
-				MonkeyQuest_Show();
-			end
-		else
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB = false;
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_TOPLEFT";
-			MonkeyQuest_Show();
-		end
-	end
-	
 	-- set the check state of the MonkeyQuestShowHiddenCheckButton
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true) then
 		MonkeyQuestShowHiddenCheckButton:SetChecked(1);
@@ -548,13 +522,6 @@ function MonkeyQuest_Refresh(MBDaily)
 				MonkeyQuestTitleText:SetText("(" .. DQCompleted .. "/" .. DQMax .. ")");
 			end
 		end
-
-	
-	-- update the BIB text
-	if (BIB_MonkeyQuestButton_GetButtonText) then
-		BIB_MonkeyQuestButton_GetButtonText();
-	end
-
 
 	MonkeyQuest.m_iNumEntries = iNumEntries;
 
@@ -1092,35 +1059,33 @@ function MonkeyQuest_Resize()
 
 
 	-- Set the grow direction
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLockBIB == false) then
-		-- Added by Diungo
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp == false) then
-			MonkeyQuestFrame:ClearAllPoints();
-			-- grow down
-			MonkeyQuestFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT",
-				MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
-				MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop);
-	
-			-- check to see if it grew off the screen
-			--if (MonkeyQuestFrame:GetBottom() < 0) then
-			--	MonkeyQuestFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT",
-			--	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
-			--	MonkeyQuestFrame:GetHeight() - 2);
-			--end
-		else
-			MonkeyQuestFrame:ClearAllPoints();
-			-- grow up
-			MonkeyQuestFrame:SetPoint("BOTTOMLEFT", "UIParent", "BOTTOMLEFT",
-				MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
-				MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom);
-	
-			-- check to see if it grew off the screen
-			--if (MonkeyQuestFrame:GetTop() > 1024) then
-			--	MonkeyQuestFrame:SetPoint("BOTTOMLEFT", "UIParent", "BOTTOMLEFT",
-			--	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
-			--	1024 - (MonkeyQuestFrame:GetHeight() - 2));
-			--end
-		end
+	-- Added by Diungo
+	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp == false) then
+		MonkeyQuestFrame:ClearAllPoints();
+		-- grow down
+		MonkeyQuestFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT",
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop);
+
+		-- check to see if it grew off the screen
+		--if (MonkeyQuestFrame:GetBottom() < 0) then
+		--	MonkeyQuestFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT",
+		--	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
+		--	MonkeyQuestFrame:GetHeight() - 2);
+		--end
+	else
+		MonkeyQuestFrame:ClearAllPoints();
+		-- grow up
+		MonkeyQuestFrame:SetPoint("BOTTOMLEFT", "UIParent", "BOTTOMLEFT",
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom);
+
+		-- check to see if it grew off the screen
+		--if (MonkeyQuestFrame:GetTop() > 1024) then
+		--	MonkeyQuestFrame:SetPoint("BOTTOMLEFT", "UIParent", "BOTTOMLEFT",
+		--	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
+		--	1024 - (MonkeyQuestFrame:GetHeight() - 2));
+		--end
 	end
 
 	-- save the position
