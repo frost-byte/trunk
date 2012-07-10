@@ -490,7 +490,15 @@ function MonkeyQuest_Refresh(MBDaily)
 	local iNumEntries, iNumQuests = GetNumQuestLogEntries();
 	
 	local DQCompleted = GetDailyQuestsCompleted();
-	local DQMax = GetMaxDailyQuests();
+	local DQMax;
+	
+	local v, b, d, t = GetBuildInfo();
+	
+	if (t >= 50000) then
+		DQMax = " Dailies"
+	else
+		DQMax = "/" .. GetMaxDailyQuests();
+	end
 
 	MonkeyQuestTitleText:SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
 	-- set the title, with or without the number of quests
@@ -500,26 +508,26 @@ function MonkeyQuest_Refresh(MBDaily)
 				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
 					MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " " .. iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS);
 				else
-					MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " " .. iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS .. " (" .. DQCompleted .. "/" .. DQMax .. ")");
+					MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " " .. iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS .. " (" .. DQCompleted .. DQMax .. ")");
 				end
 			else
 				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
 					MonkeyQuestTitleText:SetText(iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS);
 				else
-					MonkeyQuestTitleText:SetText(iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS .. " (" .. DQCompleted .. "/" .. DQMax .. ")");
+					MonkeyQuestTitleText:SetText(iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS .. " (" .. DQCompleted .. DQMax .. ")");
 				end
 			end
 		elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle == false) then
 			if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
 				MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE);
 			else
-				MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " (" .. DQCompleted .. "/" .. DQMax .. ")");
+				MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " (" .. DQCompleted .. DQMax .. ")");
 			end
 		else
 			if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
 				MonkeyQuestTitleText:SetText("");
 			else
-				MonkeyQuestTitleText:SetText("(" .. DQCompleted .. "/" .. DQMax .. ")");
+				MonkeyQuestTitleText:SetText("(" .. DQCompleted .. DQMax .. ")");
 			end
 		end
 
@@ -1407,6 +1415,14 @@ function MonkeyQuestButton_OnEnter(self, motion)
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "NONE") then
 		return;
 	end
+	
+	if (self == nil) then
+		return;
+	end
+	
+	if (self.m_iQuestIndex == nil) then
+		return;
+	end
 
 	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(self.m_iQuestIndex);
 
@@ -1465,7 +1481,16 @@ function MonkeyQuestButton_OnEnter(self, motion)
 	
 	
 	-- see if any nearby group mates are on this quest
-	local iNumPartyMembers = GetNumPartyMembers();
+	local iNumPartyMembers;
+	
+	local v, b, d, t = GetBuildInfo();
+	
+	if (t >= 50000) then
+		iNumPartyMembers = GetNumGroupMembers();
+	else
+		iNumPartyMembers = GetNumPartyMembers();
+	end
+	
 	local isOnQuest, i;
 	
 	for i = 1, iNumPartyMembers do
