@@ -1,5 +1,5 @@
-﻿## Interface: 50001
-## Title: MonkeyQuest v2.9.20
+﻿## Interface: 50100
+## Title: MonkeyQuest v2.9.21
 ## Notes: Displays your quests for quick viewing.
 ## Notes-deDE: Stellt Quests in einer kompakten Uebersicht dar.
 ## Author: Trentin, Jim-Bim
