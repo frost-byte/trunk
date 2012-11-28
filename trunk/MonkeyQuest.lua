@@ -1350,7 +1350,7 @@ function MonkeyQuestButton_OnClick(self, button, down)
 			SelectQuestLogEntry(self.m_iQuestIndex);
 			
 			-- try and share this quest with party members
-			if (GetQuestLogPushable() and GetNumPartyMembers() > 0) then
+			if (GetQuestLogPushable() and GetNumSubgroupMembers() > 0) then
 				QuestLogPushQuest();
 			end
 			
@@ -1486,7 +1486,7 @@ function MonkeyQuestButton_OnEnter(self, motion)
 	local v, b, d, t = GetBuildInfo();
 	
 	if (t >= 50000) then
-		iNumPartyMembers = GetNumGroupMembers();
+		iNumPartyMembers = GetNumSubgroupMembers();
 	else
 		iNumPartyMembers = GetNumPartyMembers();
 	end
