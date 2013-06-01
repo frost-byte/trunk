@@ -52,8 +52,8 @@ function MonkeyQuest_OnLoad(self)
 	MonkeyQuest_OLD_aftt_setName = aftt_setName;
 	aftt_setName = MonkeyQuest_NEW_aftt_setName;
     
-    -- this will catch mobs needed for quests
-	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT');
+    -- this will catch mobs needed for quests (not needed anymore)
+	-- self:RegisterEvent('UPDATE_MOUSEOVER_UNIT');
 end
 
 function MonkeyQuest_OnUpdate(self, elapsed)
@@ -198,10 +198,11 @@ function MonkeyQuest_OnEvent(self, event, ...)
         end
     end -- TOOLTIP_ANCHOR_DEFAULT
 
-    if (event == 'UPDATE_MOUSEOVER_UNIT') then
-        -- check if this is a quest item
-        MonkeyQuest_SearchTooltip();
-    end -- UPDATE_MOUSEOVER_UNIT
+	--not needed anymore
+    --if (event == 'UPDATE_MOUSEOVER_UNIT') then
+    --    -- check if this is a quest item
+    --    MonkeyQuest_SearchTooltip();
+    --end -- UPDATE_MOUSEOVER_UNIT
 end
 
 -- this function is called when the frame should be dragged around
