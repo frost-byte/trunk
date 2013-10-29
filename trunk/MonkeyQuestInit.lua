@@ -12,7 +12,7 @@
 	end
 		
 	-- add the realm to the "player's name" for the config settings
-	MonkeyQuest.m_strPlayer = GetCVar("realmName").."|"..MonkeyQuest.m_strPlayer;
+	MonkeyQuest.m_strPlayer = GetRealmName().."|"..MonkeyQuest.m_strPlayer;
 	
 	-- check if the variable needs initializing
 	if (not MonkeyQuestConfig) then
