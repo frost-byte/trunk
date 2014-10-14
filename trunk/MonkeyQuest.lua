@@ -456,9 +456,9 @@ function MonkeyQuest_Refresh(MBDaily)
 	
 	-- set the check state of the MonkeyQuestShowHiddenCheckButton
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true) then
-		MonkeyQuestShowHiddenCheckButton:SetChecked(1);
+		MonkeyQuestShowHiddenCheckButton:SetChecked(true);
 	else
-		MonkeyQuestShowHiddenCheckButton:SetChecked(0);
+		MonkeyQuestShowHiddenCheckButton:SetChecked(false);
 	end
 	
 	-- make sure the minimize button has the right texture
@@ -555,8 +555,8 @@ function MonkeyQuest_Refresh(MBDaily)
 			-- strQuestLogTitleText		the title text of the quest, may be a header (ex. Wetlands)
 			-- strQuestLevel			the level of the quest
 			-- strQuestTag				the tag on the quest (ex. COMPLETED)
-			local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(i);
-
+			local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency = GetQuestLogTitle(i);
+			
 			-- are we looking for the next header?
 			if (bNextHeader == true and isHeader) then
 				-- no longer skipping quests
@@ -652,9 +652,9 @@ function MonkeyQuest_Refresh(MBDaily)
 						
 						-- update hide quests buttons
 						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked == true) then
-							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(1);
+							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(true);
 						else
-							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(0);
+							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(false);
 						end
 						
 						_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
@@ -675,72 +675,26 @@ function MonkeyQuest_Refresh(MBDaily)
 
 						-- check if the user wants the quest levels
 						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel == true) then
-	
-							if (strQuestTag == GROUP) then
-								if (not suggestedGroup) or suggestedGroup <= 1 then	
-										 suggestedGroup = "";
-								end
-								if (isDaily ~= 1) then
-									strMonkeyQuestBody = strMonkeyQuestBody ..
-										format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-											"[" .. strQuestLevel .. "g"..suggestedGroup.."] ");
-								end
-								if (isDaily == 1) then
-									strMonkeyQuestBody = strMonkeyQuestBody ..
-										format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-											"[" .. strQuestLevel .. "g"..suggestedGroup.."*] ");
-								end
-								
-							elseif (strQuestTag == MONKEYQUEST_DUNGEON) then
-								if (isDaily ~= 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "d] ");
-								end
-								if (isDaily == 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "d*] ");
-								end
-								
-							elseif (strQuestTag == RAID) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "r] ");
-								
-							elseif (strQuestTag == MONKEYQUEST_PVP) then
-								if (isDaily ~= 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "p] ");
-								end
-								if (isDaily == 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "p*] ");
-								end
-								
-							elseif (strQuestTag == DUNGEON_DIFFICULTY2) then
-								if (isDaily ~= 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "d+] ");
-								end
-								if (isDaily == 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "d+*] ");
-								end
-								
-							elseif (isDaily == 1) then
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "*] ");
+							if (not suggestedGroup) or suggestedGroup <= 1 then	
+									suggestedGroup = ""
 							else
-								strMonkeyQuestBody = strMonkeyQuestBody ..
-									format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-										"[" .. strQuestLevel .. "] ");
+									suggestedGroup = "g"..suggestedGroup
 							end
+							
+							if (frequency <= 1) then
+								frequency = ""
+							elseif (frequency == 2) then
+								--Daily
+								frequency = "*"
+							elseif (frequency == 3) then
+								--Weekly
+								frequency = "**"
+							end
+							
+							strMonkeyQuestBody = strMonkeyQuestBody ..
+								format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
+									"["..strQuestLevel..suggestedGroup..frequency.."]");
+							
 						end
 
 						-- add the completed tag, if needed
@@ -801,7 +755,7 @@ function MonkeyQuest_Refresh(MBDaily)
 										if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == true) then
 											strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. MonkeyQuest_GetLeaderboardColorStr(strLeaderBoardText) .. strLeaderBoardText .. "\n";
 										else
-											strMonkeyQuestBody = strMonkeyQuestBody .. "  - " .. MonkeyQuest_GetLeaderboardColorStr(strLeaderBoardText) .. strLeaderBoardText .. "\n";
+											strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. strLeaderBoardText .. "\n";
 										end
 									elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives == false
 										or MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden) then
@@ -820,7 +774,7 @@ function MonkeyQuest_Refresh(MBDaily)
 
 									if (objectiveType == "item" or objectiveType == "monster" or objectiveType == "object") then
 
-										j, k, objectiveName, objectiveNumItems, objectiveNumNeeded = string.find(objectiveDesc, "(.*):%s*([-%d]+)%s*/%s*([-%d]+)%s*$");
+										j, k, objectiveNumItems, objectiveNumNeeded, objectiveName = string.find(objectiveDesc, "([-%d]+)/([-%d]+)%s*(.*)$");
 
 										if (objectiveName ~= nil and objectiveName ~= "  slain" and objectiveName ~= " ") then
 										
@@ -969,7 +923,7 @@ function MonkeyQuest_RefreshQuestItemList()
 		-- strQuestLogTitleText		the title text of the quest, may be a header (ex. Wetlands)
 		-- strQuestLevel			the level of the quest
 		-- strQuestTag				the tag on the quest (ex. COMPLETED)
-		strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
+		strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 		
 		if (not isHeader) then
 			-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
@@ -994,7 +948,7 @@ function MonkeyQuest_AddQuestItemToList(strLeaderBoardText)
 		return;
 	end
 	
-	local i, j, strItemName, iNumItems, iNumNeeded = string.find(strLeaderBoardText, "(.*):%s*([-%d]+)%s*/%s*([-%d]+)%s*$");
+	local i, j, iNumItems, iNumNeeded, strItemName = string.find(strLeaderBoardText, "([-%d]+)/([-%d]+)%s*(.*)$");
 	
 	if (iNumItems == nil) then
 		-- not a quest item
@@ -1107,8 +1061,8 @@ end
 
 -- Get a colour for the leaderboard item depending on how "done" it is
 function MonkeyQuest_GetLeaderboardColorStr(strText)
-	local i, j, strItemName, iNumItems, iNumNeeded = string.find(strText, "(.*):%s*([-%d]+)%s*/%s*([-%d]+)%s*$");
-	
+	local i, j, iNumItems, iNumNeeded, strItemName = string.find(strText, "([-%d]+)/([-%d]+)%s*(.*)$");
+
 	-- wraith:
 	if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == true ) then
 		if (iNumItems ~= nil) then
@@ -1118,7 +1072,7 @@ function MonkeyQuest_GetLeaderboardColorStr(strText)
 		end
 	
 		-- it's a quest with no numerical objectives
-		local i, j, strItemName, strItems, strNeeded = string.find(strText, "(.*):%s*([-%a]+)%s*/%s*([-%a]+)%s*$");
+		local i, j, strItems, strNeeded, strItemName = string.find(strText, "([-%a]+)/([-%a]+)%s*(.*)$");
 		-- is it a string/string type?
 		if (strItems ~= nil) then
 			if (strItems == strNeeded) then
@@ -1239,7 +1193,8 @@ end
 function MonkeyQuestButton_OnClick(self, button, down)
 
 	local strQuestLink = GetQuestLink(self.m_iQuestIndex);
-	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(self.m_iQuestIndex);
+	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency = GetQuestLogTitle(self.m_iQuestIndex);
+
 
 	
 	if (isHeader) then
@@ -1260,53 +1215,24 @@ function MonkeyQuestButton_OnClick(self, button, down)
 	if (IsShiftKeyDown() and activeWindow) then
 		-- what button was it?
 		if (button == "LeftButton") then
-			if (strQuestTag == GROUP) then
-			
-			local grp = "";
-			
-			if suggestedGroup and suggestedGroup > 1 then
-				grp = grp .. suggestedGroup;
-			end
-				if (isDaily ~= 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "g" .. grp .. "] " .. strQuestLink .. " ");
-				end
-				if (isDaily == 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "g" .. grp .. "*] " .. strQuestLink .. " ");
-				end
-				
-			elseif (strQuestTag == MONKEYQUEST_DUNGEON) then
-				if (isDaily ~= 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "d] " .. strQuestLink .. " ");
-				end
-				if (isDaily == 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "d*] " .. strQuestLink .. " ");
-				end
-				
-			elseif (strQuestTag == RAID) then
-				activeWindow:Insert("[" .. strQuestLevel .. "r] " .. strQuestLink .. " ");
-				
-			elseif (strQuestTag == MONKEYQUEST_PVP) then
-				if (isDaily ~= 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "p] " .. strQuestLink .. " ");
-				end
-				if (isDaily == 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "p*] " .. strQuestLink .. " ");
-				end
-				
-			elseif (strQuestTag == DUNGEON_DIFFICULTY2) then
-				if (isDaily ~= 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "d+] " .. strQuestLink .. " ");
-				end
-				if (isDaily == 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "d+*] " .. strQuestLink .. " ");
-				end
-				
-			elseif (isDaily == 1) then
-				activeWindow:Insert("[" .. strQuestLevel .. "*] " .. strQuestLink .. " ");
-				
+			if (not suggestedGroup) or suggestedGroup <= 1 then	
+				suggestedGroup = ""
 			else
-				activeWindow:Insert("[" .. strQuestLevel .. "] " .. strQuestLink .. " ");
-				
+				suggestedGroup = "g"..suggestedGroup
+			end
+			
+			if (frequency <= 1) then
+				frequency = ""
+			elseif (frequency == 2) then
+				--Daily
+				frequency = "*"
+			elseif (frequency == 3) then
+				--Weekly
+				frequency = "**"
+			end
+			
+			if (isDaily ~= 1) then
+				activeWindow:Insert("["..strQuestLevel..suggestedGroup..frequency.."] " .. strQuestLink .. " ");
 			end
 		else
 			local strChatObjectives = "";
@@ -1425,7 +1351,7 @@ function MonkeyQuestButton_OnEnter(self, motion)
 		return;
 	end
 
-	local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(self.m_iQuestIndex);
+	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency = GetQuestLogTitle(self.m_iQuestIndex);
 
 	if (strQuestLogTitleText == nil) then
 		return;
@@ -1460,25 +1386,30 @@ function MonkeyQuestButton_OnEnter(self, motion)
 	end
 
 	if suggestedGroup and suggestedGroup > 1 then
-		strQuestTag = strQuestTag .. " ("..suggestedGroup..")";
-	end 
-	
-	if (strQuestTag ~= nil) then
-		if (isDaily == 1) then
-			strQuestTag = format(DAILY_QUEST_TAG_TEMPLATE, strQuestTag);
-		end
+		suggestedGroup = " ("..GROUP.." "..suggestedGroup..")";
+	else
+		suggestedGroup = ""
 	end
 	
-	if (strQuestTag == nil) then
-		if (isDaily == 1) then
-			strQuestTag = format(DAILY_QUEST_TAG_TEMPLATE, ""):trim()
-		end
+	if (frequency == 2) then
+		suggestedGroup = format(DAILY_QUEST_TAG_TEMPLATE, suggestedGroup):trim();
+	elseif (frequency == 3) then
+		suggestedGroup = WEEKLY .. suggestedGroup
 	end
 	
 	-- set the tool tip text
 	GameTooltip:SetText(strQuestLogTitleText, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
+	if ( isComplete and isComplete < 0 ) then
+        GameTooltip:AddLine(FAILED, RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);
+        GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["FAILED"]));   
+    end
 	GameTooltip:AddLine(self.m_strQuestObjectives, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1);
-	GameTooltip:AddLine(strQuestTag, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
+	GameTooltip:AddLine(suggestedGroup, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
+	if (frequency == 2) then
+		GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["DAILY"]));
+	elseif (frequency == 3) then
+		GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["WEEKLY"]));
+	end
 	
 	
 	-- see if any nearby group mates are on this quest
