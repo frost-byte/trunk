@@ -65,9 +65,9 @@ function MonkeyQuest_OnUpdate(self, elapsed)
 	if (MonkeyQuest.m_setCorrectState == 1) then
 		MonkeyQuest.m_setCorrectState = 0
 		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
-			HideDetailedControls();
+			MonkeyQuest_HideDetailedControls();
 		else
-			ShowDetailedControls();
+			MonkeyQuest_ShowDetailedControls();
 		end
 	end
 
@@ -243,17 +243,17 @@ function MonkeyQuest_OnMouseUp(self, button)
 end
 
 function MonkeyQuest_OnEnter()
-	ShowDetailedControls();
+	MonkeyQuest_ShowDetailedControls();
 end
 
 function MonkeyQuest_OnLeave()
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
-		HideDetailedControls();
+		MonkeyQuest_HideDetailedControls();
 	end
 end
 
 -- wraith:
-function ShowDetailedControls()
+function MonkeyQuest_ShowDetailedControls()
 	MonkeyQuestTitleText:Show();
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == false) then
 		MonkeyQuestMinimizeButton:Show();
@@ -263,7 +263,7 @@ function ShowDetailedControls()
 end
 
 -- wraith:
-function HideDetailedControls()
+function MonkeyQuest_HideDetailedControls()
 	MonkeyQuestTitleText:Hide();
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == false) then
 		MonkeyQuestMinimizeButton:Hide();
@@ -715,23 +715,23 @@ function MonkeyQuest_Refresh(MBDaily)
 						local strQuestDescription, strQuestObjectives = GetQuestLogQuestText();
 						
 						-- wraith: item
-						local link, item, charges = GetQuestLogSpecialItemInfo(i);
-						if ( item ) then
+						local link, item, charges, showItemWhenComplete = GetQuestLogSpecialItemInfo(i);
+						if (item and (not isQuestComplete or showItemWhenComplete)) then
 							watchItemIndex = watchItemIndex + 1;
-							itemButton = _G["MQWatchFrameItem"..watchItemIndex];
+							local itemButton = _G["MQWatchFrameItem"..watchItemIndex];
 							if ( not itemButton ) then
 								MQWATCHFRAME_NUM_ITEMS = watchItemIndex;
-								itemButton = CreateFrame("BUTTON", "MQWatchFrameItem" .. watchItemIndex, _G["MonkeyQuestFrame"], "WatchFrameItemButtonTemplate");
+								itemButton = CreateFrame("BUTTON", "MQWatchFrameItem" .. watchItemIndex, _G["MonkeyQuestFrame"], "QuestObjectiveItemButtonTemplate");
 							end
-							itemButton:SetScale(0.7)
-							itemButton:Show();
-							itemButton:ClearAllPoints();
-							itemButton:SetID(i);
+
+							itemButton.questLogIndex = i;
+							itemButton.charges = charges;
+							itemButton.rangeTimer = -1;
 							SetItemButtonTexture(itemButton, item);
 							SetItemButtonCount(itemButton, charges);
-							itemButton.charges = charges;
-							WatchFrameItem_UpdateCooldown(itemButton);
-							itemButton.rangeTimer = -1;
+							QuestObjectiveItem_UpdateCooldown(itemButton);
+							
+							itemButton:ClearAllPoints();
 							if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == true ) then
 								if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true ) then
 									itemButton:SetPoint( "TOPRIGHT", _G["MonkeyQuestHideButton" .. iButtonId], "TOPLEFT", -12, 0);
@@ -741,6 +741,8 @@ function MonkeyQuest_Refresh(MBDaily)
 							else
 								itemButton:SetPoint( "TOPLEFT", _G["MonkeyQuestButton" .. iButtonId], "TOPRIGHT", 12, 0);
 							end
+							itemButton:SetScale(0.7)
+							itemButton:Show();
 						end
 		
 						if (GetNumQuestLeaderBoards() > 0) then
@@ -778,7 +780,7 @@ function MonkeyQuest_Refresh(MBDaily)
 
 										if (objectiveName ~= nil and objectiveName ~= "  slain" and objectiveName ~= " ") then
 										
-											currentObjectiveName = strQuestLogTitleText .. objectiveName;
+											local currentObjectiveName = strQuestLogTitleText .. objectiveName;
 										
 											if (MonkeyQuestObjectiveTable[currentObjectiveName] == nil) then
 												MonkeyQuestObjectiveTable[currentObjectiveName] = {};
@@ -809,7 +811,7 @@ function MonkeyQuest_Refresh(MBDaily)
 									elseif (objectiveType == "event") then
 										if (objectiveDesc ~= nil) then
 										
-											currentObjectiveDesc = strQuestLogTitleText .. objectiveDesc;
+											local currentObjectiveDesc = strQuestLogTitleText .. objectiveDesc;
 										
 											if (MonkeyQuestObjectiveTable[currentObjectiveDesc] == nil) then
 												MonkeyQuestObjectiveTable[currentObjectiveDesc] = {};
@@ -1230,10 +1232,8 @@ function MonkeyQuestButton_OnClick(self, button, down)
 				--Weekly
 				frequency = "**"
 			end
-			
-			if (isDaily ~= 1) then
-				activeWindow:Insert("["..strQuestLevel..suggestedGroup..frequency.."] " .. strQuestLink .. " ");
-			end
+
+			activeWindow:Insert("["..strQuestLevel..suggestedGroup..frequency.."] " .. strQuestLink .. " ");
 		else
 			local strChatObjectives = "";
 

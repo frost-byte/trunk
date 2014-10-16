@@ -205,8 +205,7 @@ function MonkeyQuestInit_CleanQuestList()
 	for i = 1, iNumEntries, 1 do
 		-- strQuestLogTitleText		the title text of the quest, may be a header (ex. Wetlands)
 		-- strQuestLevel			the level of the quest
-		-- strQuestTag				the tag on the quest (ex. COMPLETED)
-		local strQuestLogTitleText, strQuestLevel, strQuestTag, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
+		local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 		
 		-- since 4.0.1 some strQuestLogTitleText are nil
 		if (strQuestLogTitleText == nil) then
@@ -240,8 +239,7 @@ function MonkeyQuestInit_CleanQuestList()
 	for i = 1, iNumEntries, 1 do
 		-- strQuestLogTitleText		the title text of the quest, may be a header (ex. Wetlands)
 		-- strQuestLevel			the level of the quest
-		-- strQuestTag				the tag on the quest (ex. COMPLETED)
-		local strQuestLogTitleText, strQuestLevel, strQuestTag, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
+		local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 		
 		-- since 4.0.1 some strQuestLogTitleText are nil
 		if (strQuestLogTitleText == nil) then
@@ -334,7 +332,7 @@ function MonkeyQuestInit_ResetConfig()
 	-- finally apply the settings
 	MonkeyQuestInit_ApplySettings();
 	
-	ShowDetailedControls();
+	MonkeyQuest_ShowDetailedControls();
 end
 
 
@@ -362,7 +360,7 @@ function MonkeyQuestInit_ResetConfigToBlizzardStyle()
 	-- finally apply the settings
 	MonkeyQuestInit_ApplySettings();
 	
-	HideDetailedControls();
+	MonkeyQuest_HideDetailedControls();
 end
 
 function MonkeyQuestInit_Font(iFont)

@@ -131,7 +131,7 @@ function MonkeyQuest_SearchTooltipForRelevantQuest()
     -- check the string isn't nil
     if (_G['GameTooltipTextLeft1']:GetText() ~= nil) then
 
-        strRelevantQuest = MonkeyQuest_SearchQuestDetails(_G['GameTooltipTextLeft1']:GetText());
+        local strRelevantQuest = MonkeyQuest_SearchQuestDetails(_G['GameTooltipTextLeft1']:GetText());
 
         if (strRelevantQuest ~= nil) then
 
@@ -141,7 +141,7 @@ function MonkeyQuest_SearchTooltipForRelevantQuest()
 
 
             -- resize the tootip (thanks Turan's AuctionIt)
-            length = _G[GameTooltip:GetName() .. "TextLeft" .. GameTooltip:NumLines()]:GetStringWidth();
+            local length = _G[GameTooltip:GetName() .. "TextLeft" .. GameTooltip:NumLines()]:GetStringWidth();
             -- Give the text some border space on the right side of the tooltip.
             length = length + 22;
 
@@ -166,7 +166,7 @@ function MonkeyQuest_SearchQuestDetails(strSearch)
         return false;
     end
     
-    local strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete;
+    local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete;
     local i, j, k;
     local iNumEntries, iNumQuests = GetNumQuestLogEntries();
     local strQuestDescription, strQuestObjectives;
@@ -175,8 +175,7 @@ function MonkeyQuest_SearchQuestDetails(strSearch)
     for i = 1, iNumEntries, 1 do
         -- strQuestLogTitleText     the title text of the quest, may be a header (ex. Wetlands)
         -- strQuestLevel            the level of the quest
-        -- strQuestTag              the tag on the quest (ex. COMPLETED)
-        strQuestLogTitleText, strQuestLevel, strQuestTag, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
+        strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete = GetQuestLogTitle(i);
 
         if (not isHeader) then
             -- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
