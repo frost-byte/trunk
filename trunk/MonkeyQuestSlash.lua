@@ -723,9 +723,9 @@ end
 
 function MonkeyQuestSlash_CmdHideHeader(bHide)
 	if (bHide == false) then
-		ShowDetailedControls()
+		MonkeyQuest_ShowDetailedControls()
 	else
-		HideDetailedControls()
+		MonkeyQuest_HideDetailedControls()
 	end
 	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = bHide;
 	MonkeyQuest_Refresh();
