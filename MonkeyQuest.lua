@@ -786,7 +786,7 @@ function MonkeyQuest_Refresh(MBDaily)
 												MonkeyQuestObjectiveTable[currentObjectiveName] = {};
 											end
 
-											if (objectiveComplete == 1 and MonkeyQuestObjectiveTable[currentObjectiveName].complete == nil and MonkeyQuestAllowSounds == true) then
+											if (objectiveComplete == true and MonkeyQuestObjectiveTable[currentObjectiveName].complete == nil and MonkeyQuestAllowSounds == true) then
 
 												local FactionPlayer = UnitFactionGroup("player")
 
@@ -817,7 +817,7 @@ function MonkeyQuest_Refresh(MBDaily)
 												MonkeyQuestObjectiveTable[currentObjectiveDesc] = {};
 											end
 
-											if (objectiveComplete == 1 and MonkeyQuestObjectiveTable[currentObjectiveDesc].complete == nil and MonkeyQuestAllowSounds == true) then
+											if (objectiveComplete == true and MonkeyQuestObjectiveTable[currentObjectiveDesc].complete == nil and MonkeyQuestAllowSounds == true) then
 
 												local FactionPlayer = UnitFactionGroup("player")
 
