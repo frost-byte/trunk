@@ -1195,7 +1195,7 @@ end
 function MonkeyQuestButton_OnClick(self, button, down)
 
 	local strQuestLink = GetQuestLink(self.m_iQuestIndex);
-	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency = GetQuestLogTitle(self.m_iQuestIndex);
+	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(self.m_iQuestIndex);
 
 
 	
@@ -1316,8 +1316,7 @@ function MonkeyQuestButton_OnClick(self, button, down)
 		ShowUIPanel(QuestLogFrame);
 
 		-- actually select the quest entry
-		SelectQuestLogEntry(self.m_iQuestIndex);
-		QuestLog_SetSelection(self.m_iQuestIndex);
+		QuestMapFrame_OpenToQuestDetails(questID);
 
 		-- update the real quest log
 		QuestLog_Update();
