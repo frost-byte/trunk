@@ -14,6 +14,9 @@
 	-- add the realm to the "player's name" for the config settings
 	MonkeyQuest.m_strPlayer = GetRealmName().."|"..MonkeyQuest.m_strPlayer;
 	
+	-- set this to MonkeyQuest.m_strPlayer to enable per character
+	MonkeyQuest.m_global = "Global"
+	
 	-- check if the variable needs initializing
 	if (not MonkeyQuestConfig) then
 		MonkeyQuestConfig = {};
@@ -23,161 +26,164 @@
 	if (not MonkeyQuestConfig[MonkeyQuest.m_strPlayer]) then
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer] = {};
 	end	
+	if (not MonkeyQuestConfig[MonkeyQuest.m_global]) then
+		MonkeyQuestConfig[MonkeyQuest.m_global] = {};
+	end	
 	
 	-- set the defaults if the variables don't exist
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay = MONKEYQUEST_DEFAULT_DISPLAY;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay = MONKEYQUEST_DEFAULT_DISPLAY;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = MONKEYQUEST_DEFAULT_ANCHOR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = MONKEYQUEST_DEFAULT_ANCHOR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives = MONKEYQUEST_DEFAULT_OBJECTIVES;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives = MONKEYQUEST_DEFAULT_OBJECTIVES;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = MONKEYQUEST_DEFAULT_ALPHA;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = MONKEYQUEST_DEFAULT_ALPHA;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha = MONKEYQUEST_DEFAULT_HIGHLIGHT_ALPHA;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iHighlightAlpha == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iHighlightAlpha = MONKEYQUEST_DEFAULT_HIGHLIGHT_ALPHA;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameAlpha == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameAlpha = MONKEYQUEST_DEFAULT_FRAME_ALPHA;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameAlpha == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameAlpha = MONKEYQUEST_DEFAULT_FRAME_ALPHA;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized = MONKEYQUEST_DEFAULT_MINIMIZED;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized = MONKEYQUEST_DEFAULT_MINIMIZED;
 	end
 	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList == nil) then
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList = {};
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth = MONKEYQUEST_DEFAULT_WIDTH;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth = MONKEYQUEST_DEFAULT_WIDTH;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = MONKEYQUEST_DEFAULT_SHOWHIDDEN;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden = MONKEYQUEST_DEFAULT_SHOWHIDDEN;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders = MONKEYQUEST_DEFAULT_NOHEADERS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders = MONKEYQUEST_DEFAULT_NOHEADERS;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAlwaysHeaders == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAlwaysHeaders = MONKEYQUEST_DEFAULT_ALWAYSHEADERS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bAlwaysHeaders == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bAlwaysHeaders = MONKEYQUEST_DEFAULT_ALWAYSHEADERS;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder = MONKEYQUEST_DEFAULT_NOBORDER;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder = MONKEYQUEST_DEFAULT_NOBORDER;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp = MONKEYQUEST_DEFAULT_GROWUP;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp = MONKEYQUEST_DEFAULT_GROWUP;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests = MONKEYQUEST_DEFAULT_SHOWNUMQUESTS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNumQuests == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNumQuests = MONKEYQUEST_DEFAULT_SHOWNUMQUESTS;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests = MONKEYQUEST_DEFAULT_SHOWDAILYNUMQUESTS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests = MONKEYQUEST_DEFAULT_SHOWDAILYNUMQUESTS;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked = MONKEYQUEST_DEFAULT_LOCKED;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bLocked == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bLocked = MONKEYQUEST_DEFAULT_LOCKED;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedQuests == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedQuests = MONKEYQUEST_DEFAULT_HIDECOMPLETEDQUESTS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedQuests == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedQuests = MONKEYQUEST_DEFAULT_HIDECOMPLETEDQUESTS;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives = MONKEYQUEST_DEFAULT_HIDECOMPLETEDOBJECTIVES;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedObjectives == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedObjectives = MONKEYQUEST_DEFAULT_HIDECOMPLETEDOBJECTIVES;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick = MONKEYQUEST_DEFAULT_ALLOWRIGHTCLICK;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bAllowRightClick == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bAllowRightClick = MONKEYQUEST_DEFAULT_ALLOWRIGHTCLICK;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowTooltipObjectives == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowTooltipObjectives = MONKEYQUEST_DEFAULT_SHOWTOOLTIPOBJECTIVES;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowTooltipObjectives == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowTooltipObjectives = MONKEYQUEST_DEFAULT_SHOWTOOLTIPOBJECTIVES;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons = MONKEYQUEST_DEFAULT_HIDETITLEBUTTONS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons = MONKEYQUEST_DEFAULT_HIDETITLEBUTTONS;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle = MONKEYQUEST_DEFAULT_HIDETITLE;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitle == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitle = MONKEYQUEST_DEFAULT_HIDETITLE;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete = MONKEYQUEST_DEFAULT_WORKCOMPLETE;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bWorkComplete == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bWorkComplete = MONKEYQUEST_DEFAULT_WORKCOMPLETE;
 	end
 
 	-- colour config vars
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourTitle == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourTitle = MONKEYQUEST_DEFAULT_COLOURTITLE;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourTitle == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourTitle = MONKEYQUEST_DEFAULT_COLOURTITLE;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour = MONKEYQUEST_DEFAULT_QUESTTITLECOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strQuestTitleColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strQuestTitleColour = MONKEYQUEST_DEFAULT_QUESTTITLECOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderOpenColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderOpenColour = MONKEYQUEST_DEFAULT_HEADEROPENCOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderOpenColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderOpenColour = MONKEYQUEST_DEFAULT_HEADEROPENCOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderClosedColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderClosedColour = MONKEYQUEST_DEFAULT_HEADERCLOSEDCOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderClosedColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderClosedColour = MONKEYQUEST_DEFAULT_HEADERCLOSEDCOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strOverviewColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strOverviewColour = MONKEYQUEST_DEFAULT_OVERVIEWCOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strOverviewColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strOverviewColour = MONKEYQUEST_DEFAULT_OVERVIEWCOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strSpecialObjectiveColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strSpecialObjectiveColour = MONKEYQUEST_DEFAULT_SPECIALOBJECTIVECOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strSpecialObjectiveColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strSpecialObjectiveColour = MONKEYQUEST_DEFAULT_SPECIALOBJECTIVECOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour = MONKEYQUEST_DEFAULT_INITIALOBJECTIVECOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strInitialObjectiveColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strInitialObjectiveColour = MONKEYQUEST_DEFAULT_INITIALOBJECTIVECOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strMidObjectiveColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strMidObjectiveColour = MONKEYQUEST_DEFAULT_MIDOBJECTIVECOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strMidObjectiveColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strMidObjectiveColour = MONKEYQUEST_DEFAULT_MIDOBJECTIVECOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour = MONKEYQUEST_DEFAULT_COMPLETEOBJECTIVECOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour = MONKEYQUEST_DEFAULT_COMPLETEOBJECTIVECOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour = MONKEYQUEST_DEFAULT_FINISHOBJECTIVECOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour = MONKEYQUEST_DEFAULT_FINISHOBJECTIVECOLOUR;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strZoneHighlightColour == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strZoneHighlightColour = MONKEYQUEST_DEFAULT_ZONEHILIGHTCOLOUR;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strZoneHighlightColour == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strZoneHighlightColour = MONKEYQUEST_DEFAULT_ZONEHILIGHTCOLOUR;
 	end
 	
 	-- font configs
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight = MONKEYQUEST_DEFAULT_FONTHEIGHT;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight = MONKEYQUEST_DEFAULT_FONTHEIGHT;
 	end
 
 	-- Skinny font
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = MONKEYQUEST_DEFAULT_FONT;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFont == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFont = MONKEYQUEST_DEFAULT_FONT;
 	end
 
 	-- Golden border
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder = MONKEYQUEST_DEFAULT_CRASHBORDER;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder = MONKEYQUEST_DEFAULT_CRASHBORDER;
 	end
 
 	-- Noob tips
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips = MONKEYQUEST_DEFAULT_SHOWNOOBTIPS;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips = MONKEYQUEST_DEFAULT_SHOWNOOBTIPS;
 	end
 
 	-- quest padding
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding = MONKEYQUEST_DEFAULT_QUESTPADDING;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding = MONKEYQUEST_DEFAULT_QUESTPADDING;
 	end
 	
 	-- show zone highlight
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight = MONKEYQUEST_DEFAULT_SHOWZONEHIGHLIGHT;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowZoneHighlight == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowZoneHighlight = MONKEYQUEST_DEFAULT_SHOWZONEHIGHLIGHT;
 	end
 	
 	-- show quest levels in MonkeyQuest frame
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel = MONKEYQUEST_DEFAULT_SHOWQUESTLEVEL;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowQuestLevel == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowQuestLevel = MONKEYQUEST_DEFAULT_SHOWQUESTLEVEL;
 	end
 	
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
 	end
 	
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = MONKEYQUEST_DEFAULT_ITEMSONLEFT;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bItemsOnLeft == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bItemsOnLeft = MONKEYQUEST_DEFAULT_ITEMSONLEFT;
 	end
 	
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
 	end
 
 	-- All variables are loaded now
@@ -212,16 +218,15 @@ function MonkeyQuestInit_CleanQuestList()
 			strQuestLogTitleText = MONKEYQUEST_NO_HEADER
 		end
 		
-		MonkeyQuest.m_aQuestList[strQuestLogTitleText] = {};
+		MonkeyQuest.m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)] = {};
 		
 		-- put the entry in the hidden list if it's not there already
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] == nil) then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] = {};
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = true;
+		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)] == nil) then
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)] = {};
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked = true;
 		end
 			
-		MonkeyQuest.m_aQuestList[strQuestLogTitleText].m_bChecked = 
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked;
+		MonkeyQuest.m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked = MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked;
 	end
 	
 	-- clean up the config hidden list
@@ -246,9 +251,8 @@ function MonkeyQuestInit_CleanQuestList()
 			strQuestLogTitleText = MONKEYQUEST_NO_HEADER
 		end
 		
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] = {};
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = 
-			MonkeyQuest.m_aQuestList[strQuestLogTitleText].m_bChecked;
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)] = {};
+		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked = MonkeyQuest.m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked;
 			
 		
 		-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
@@ -275,59 +279,59 @@ end
 function MonkeyQuestInit_ResetConfig()
 
 	-- reset all the config variables to the defaults, but keep the hidden list intact
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = MONKEYQUEST_DEFAULT_ALPHA;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha = MONKEYQUEST_DEFAULT_HIGHLIGHT_ALPHA;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameAlpha = MONKEYQUEST_DEFAULT_FRAME_ALPHA;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth = MONKEYQUEST_DEFAULT_WIDTH;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft = MONKEYQUEST_DEFAULT_LEFT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop = MONKEYQUEST_DEFAULT_TOP;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom = MONKEYQUEST_DEFAULT_BOTTOM;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding = MONKEYQUEST_DEFAULT_QUESTPADDING;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight = MONKEYQUEST_DEFAULT_SHOWZONEHIGHLIGHT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel = MONKEYQUEST_DEFAULT_SHOWQUESTLEVEL;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay = MONKEYQUEST_DEFAULT_DISPLAY;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDefaultAnchor = MONKEYQUEST_DEFAULT_DEFAULTANCHOR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = MONKEYQUEST_DEFAULT_ANCHOR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives = MONKEYQUEST_DEFAULT_OBJECTIVES;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized = MONKEYQUEST_DEFAULT_MINIMIZED;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = MONKEYQUEST_DEFAULT_SHOWHIDDEN;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders = MONKEYQUEST_DEFAULT_NOHEADERS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAlwaysHeaders = MONKEYQUEST_DEFAULT_ALWAYSHEADERS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder = MONKEYQUEST_DEFAULT_NOBORDER;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp = MONKEYQUEST_DEFAULT_GROWUP;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests = MONKEYQUEST_DEFAULT_SHOWNUMQUESTS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests = MONKEYQUEST_DEFAULT_SHOWDAILYNUMQUESTS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked = MONKEYQUEST_DEFAULT_LOCKED;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedQuests = MONKEYQUEST_DEFAULT_HIDECOMPLETEDQUESTS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives = MONKEYQUEST_DEFAULT_HIDECOMPLETEDOBJECTIVES;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick = MONKEYQUEST_DEFAULT_ALLOWRIGHTCLICK;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowTooltipObjectives = MONKEYQUEST_DEFAULT_SHOWTOOLTIPOBJECTIVES;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons = MONKEYQUEST_DEFAULT_HIDETITLEBUTTONS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle = MONKEYQUEST_DEFAULT_HIDETITLE;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete = MONKEYQUEST_DEFAULT_WORKCOMPLETE;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourTitle = MONKEYQUEST_DEFAULT_COLOURTITLE;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = MONKEYQUEST_DEFAULT_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iHighlightAlpha = MONKEYQUEST_DEFAULT_HIGHLIGHT_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameAlpha = MONKEYQUEST_DEFAULT_FRAME_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth = MONKEYQUEST_DEFAULT_WIDTH;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft = MONKEYQUEST_DEFAULT_LEFT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop = MONKEYQUEST_DEFAULT_TOP;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom = MONKEYQUEST_DEFAULT_BOTTOM;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding = MONKEYQUEST_DEFAULT_QUESTPADDING;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowZoneHighlight = MONKEYQUEST_DEFAULT_SHOWZONEHIGHLIGHT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowQuestLevel = MONKEYQUEST_DEFAULT_SHOWQUESTLEVEL;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay = MONKEYQUEST_DEFAULT_DISPLAY;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bDefaultAnchor = MONKEYQUEST_DEFAULT_DEFAULTANCHOR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = MONKEYQUEST_DEFAULT_ANCHOR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives = MONKEYQUEST_DEFAULT_OBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized = MONKEYQUEST_DEFAULT_MINIMIZED;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden = MONKEYQUEST_DEFAULT_SHOWHIDDEN;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders = MONKEYQUEST_DEFAULT_NOHEADERS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bAlwaysHeaders = MONKEYQUEST_DEFAULT_ALWAYSHEADERS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder = MONKEYQUEST_DEFAULT_NOBORDER;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp = MONKEYQUEST_DEFAULT_GROWUP;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNumQuests = MONKEYQUEST_DEFAULT_SHOWNUMQUESTS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests = MONKEYQUEST_DEFAULT_SHOWDAILYNUMQUESTS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bLocked = MONKEYQUEST_DEFAULT_LOCKED;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedQuests = MONKEYQUEST_DEFAULT_HIDECOMPLETEDQUESTS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedObjectives = MONKEYQUEST_DEFAULT_HIDECOMPLETEDOBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bAllowRightClick = MONKEYQUEST_DEFAULT_ALLOWRIGHTCLICK;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowTooltipObjectives = MONKEYQUEST_DEFAULT_SHOWTOOLTIPOBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons = MONKEYQUEST_DEFAULT_HIDETITLEBUTTONS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitle = MONKEYQUEST_DEFAULT_HIDETITLE;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bWorkComplete = MONKEYQUEST_DEFAULT_WORKCOMPLETE;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourTitle = MONKEYQUEST_DEFAULT_COLOURTITLE;
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight = MONKEYQUEST_DEFAULT_FONTHEIGHT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = MONKEYQUEST_DEFAULT_FONT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder = MONKEYQUEST_DEFAULT_CRASHBORDER;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = MONKEYQUEST_DEFAULT_ITEMSONLEFT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight = MONKEYQUEST_DEFAULT_FONTHEIGHT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFont = MONKEYQUEST_DEFAULT_FONT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder = MONKEYQUEST_DEFAULT_CRASHBORDER;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress = MONKEYQUEST_DEFAULT_COLOURSUBOBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bItemsOnLeft = MONKEYQUEST_DEFAULT_ITEMSONLEFT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader = MONKEYQUEST_DEFAULT_HIDEHEADER;
 	
 	-- noob tips
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips = MONKEYQUEST_DEFAULT_SHOWNOOBTIPS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips = MONKEYQUEST_DEFAULT_SHOWNOOBTIPS;
 
 	-- colours
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour = MONKEYQUEST_DEFAULT_QUESTTITLECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderOpenColour = MONKEYQUEST_DEFAULT_HEADEROPENCOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderClosedColour = MONKEYQUEST_DEFAULT_HEADERCLOSEDCOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strOverviewColour = MONKEYQUEST_DEFAULT_OVERVIEWCOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strSpecialObjectiveColour = MONKEYQUEST_DEFAULT_SPECIALOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strMidObjectiveColour = MONKEYQUEST_DEFAULT_MIDOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour = MONKEYQUEST_DEFAULT_INITIALOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour = MONKEYQUEST_DEFAULT_COMPLETEOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour = MONKEYQUEST_DEFAULT_FINISHOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strZoneHighlightColour = MONKEYQUEST_DEFAULT_ZONEHILIGHTCOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strQuestTitleColour = MONKEYQUEST_DEFAULT_QUESTTITLECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderOpenColour = MONKEYQUEST_DEFAULT_HEADEROPENCOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderClosedColour = MONKEYQUEST_DEFAULT_HEADERCLOSEDCOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strOverviewColour = MONKEYQUEST_DEFAULT_OVERVIEWCOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strSpecialObjectiveColour = MONKEYQUEST_DEFAULT_SPECIALOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strMidObjectiveColour = MONKEYQUEST_DEFAULT_MIDOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strInitialObjectiveColour = MONKEYQUEST_DEFAULT_INITIALOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour = MONKEYQUEST_DEFAULT_COMPLETEOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour = MONKEYQUEST_DEFAULT_FINISHOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strZoneHighlightColour = MONKEYQUEST_DEFAULT_ZONEHILIGHTCOLOUR;
 
 	-- finally apply the settings
 	MonkeyQuestInit_ApplySettings();
@@ -341,21 +345,21 @@ function MonkeyQuestInit_ResetConfigToBlizzardStyle()
 	MonkeyQuestInit_ResetConfig();
 	
 	-- apply blizzard style
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameAlpha = MONKEYQUEST_BLIZZARD_FRAME_ALPHA;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = MONKEYQUEST_BLIZZARD_ALPHA;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding = MONKEYQUEST_BLIZZARD_QUESTPADDING;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel = MONKEYQUEST_BLIZZARD_SHOWQUESTLEVEL;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives = MONKEYQUEST_BLIZZARD_OBJECTIVES;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder = MONKEYQUEST_BLIZZARD_NOBORDER;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests = MONKEYQUEST_BLIZZARD_SHOWNUMQUESTS;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete = MONKEYQUEST_BLIZZARD_WORKCOMPLETE;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour = MONKEYQUEST_BLIZZARD_QUESTTITLECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour = MONKEYQUEST_BLIZZARD_COMPLETEOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour = MONKEYQUEST_BLIZZARD_FINISHOBJECTIVECOLOUR;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = MONKEYQUEST_BLIZZARD_FONT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = MONKEYQUEST_BLIZZARD_COLOURSUBOBJECTIVES;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = MONKEYQUEST_BLIZZARD_ITEMSONLEFT;
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = MONKEYQUEST_BLIZZARD_HIDEHEADER;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameAlpha = MONKEYQUEST_BLIZZARD_FRAME_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = MONKEYQUEST_BLIZZARD_ALPHA;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding = MONKEYQUEST_BLIZZARD_QUESTPADDING;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowQuestLevel = MONKEYQUEST_BLIZZARD_SHOWQUESTLEVEL;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives = MONKEYQUEST_BLIZZARD_OBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder = MONKEYQUEST_BLIZZARD_NOBORDER;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNumQuests = MONKEYQUEST_BLIZZARD_SHOWNUMQUESTS;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bWorkComplete = MONKEYQUEST_BLIZZARD_WORKCOMPLETE;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strQuestTitleColour = MONKEYQUEST_BLIZZARD_QUESTTITLECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour = MONKEYQUEST_BLIZZARD_COMPLETEOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour = MONKEYQUEST_BLIZZARD_FINISHOBJECTIVECOLOUR;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFont = MONKEYQUEST_BLIZZARD_FONT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress = MONKEYQUEST_BLIZZARD_COLOURSUBOBJECTIVES;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bItemsOnLeft = MONKEYQUEST_BLIZZARD_ITEMSONLEFT;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader = MONKEYQUEST_BLIZZARD_HIDEHEADER;
 
 	-- finally apply the settings
 	MonkeyQuestInit_ApplySettings();
@@ -365,25 +369,25 @@ end
 
 function MonkeyQuestInit_Font(iFont)
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont = iFont;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFont = iFont;
 
 	if (iFont == 0) then
 		-- Default look
 		
 		-- change the fonts
-		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\framd.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
-		--MonkeyQuestTitleText:SetFont("Fonts\\FRIZQT__.TTF", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
+		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\framd.ttf", MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight);
+		--MonkeyQuestTitleText:SetFont("Fonts\\FRIZQT__.TTF", MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight + 2);
 
 	elseif ( iFont == 1 ) then 
 		-- crash font
 		
-		--MonkeyQuestTitleText:SetFont("Interface\\AddOns\\MonkeyLibrary\\Fonts\\adventure.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
-		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\myriapsc.ttf", MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
+		--MonkeyQuestTitleText:SetFont("Interface\\AddOns\\MonkeyLibrary\\Fonts\\adventure.ttf", MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight + 2);
+		MonkeyQuestInit_SetButtonFonts("Interface\\AddOns\\MonkeyLibrary\\Fonts\\myriapsc.ttf", MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight);
 
 	elseif ( iFont == 2 ) then
 		-- Blizzard style
 		
-		MonkeyQuestInit_SetButtonFonts(STANDARD_TEXT_FONT, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
+		MonkeyQuestInit_SetButtonFonts(STANDARD_TEXT_FONT, MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight);
 	end
 
 	-- check for MonkeyBuddy
@@ -397,7 +401,7 @@ end
 
 function MonkeyQuestInit_Border(bCrashBorder)
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder = bCrashBorder;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder = bCrashBorder;
 
 	if (bCrashBorder) then
 
@@ -416,7 +420,7 @@ function MonkeyQuestInit_Border(bCrashBorder)
 	end
 
 	-- set the border
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder == true) then
 		MonkeyQuestFrame:SetBackdropBorderColor(0.0, 0.0, 0.0, 0.0);
 	else
 		MonkeyQuestFrame:SetBackdropBorderColor(MonkeyQuest.m_colourBorder.r, MonkeyQuest.m_colourBorder.g, MonkeyQuest.m_colourBorder.b, 1.0);
@@ -441,42 +445,42 @@ end
 function MonkeyQuestInit_ApplySettings()
 
 	-- init the look
-	MonkeyQuestInit_Font(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFont);
-	MonkeyQuestInit_Border(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder);
+	MonkeyQuestInit_Font(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFont);
+	MonkeyQuestInit_Border(MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder);
 	
 	-- show or hide the main frame
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay == true) then
 		MonkeyQuestFrame:Show();
 	else
 		MonkeyQuestFrame:Hide();
 	end
 	
 	-- make sure the minimize button has the right texture
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized == true) then
 		MonkeyQuestMinimizeButton:SetNormalTexture("Interface\\AddOns\\MonkeyLibrary\\Textures\\MinimizeButton-Down");
 	else
 		MonkeyQuestMinimizeButton:SetNormalTexture("Interface\\AddOns\\MonkeyLibrary\\Textures\\MinimizeButton-Up");
 	end
 	
 	-- show or hide the title buttons
-	MonkeyQuestSlash_CmdHideTitleButtons(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons);
+	MonkeyQuestSlash_CmdHideTitleButtons(MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons);
 	
 	-- set the alpha
-	MonkeyQuest_SetAlpha(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
-	MonkeyQuest_SetFrameAlpha(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameAlpha);
+	MonkeyQuest_SetAlpha(MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha);
+	MonkeyQuest_SetFrameAlpha(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameAlpha);
 
 	-- set the border
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder == true) then
 		MonkeyQuestFrame:SetBackdropBorderColor(0.0, 0.0, 0.0, 0.0);
 	else
 		MonkeyQuestFrame:SetBackdropBorderColor(MonkeyQuest.m_colourBorder.r, MonkeyQuest.m_colourBorder.g, MonkeyQuest.m_colourBorder.b, 1.0);
 	end
 
 	-- set the width
-	MonkeyQuestFrame:SetWidth(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth);
+	MonkeyQuestFrame:SetWidth(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth);
 	
 	-- set the quest padding
-	MonkeyQuestSlash_CmdSetQuestPadding(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding);
+	MonkeyQuestSlash_CmdSetQuestPadding(MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding);
 	
 	-- finally refresh the quest list
 	MonkeyQuest_Refresh();

@@ -64,7 +64,7 @@ function MonkeyQuest_OnUpdate(self, elapsed)
 	
 	if (MonkeyQuest.m_setCorrectState == 1) then
 		MonkeyQuest.m_setCorrectState = 0
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
+		if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader == true) then
 			MonkeyQuest_HideDetailedControls();
 		else
 			MonkeyQuest_ShowDetailedControls();
@@ -213,12 +213,12 @@ function MonkeyQuest_OnMouseDown(self, button)
 	end
 	
 	-- left button moves the frame around
-	if (button == "LeftButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked == false) then
+	if (button == "LeftButton" and MonkeyQuestConfig[MonkeyQuest.m_global].m_bLocked == false) then
 		MonkeyQuestFrame:StartMoving();
 	end
 	
 	-- right button on the title or frame opens up the MonkeyBuddy, if it's there
-	if (button == "RightButton" and MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick == true) then
+	if (button == "RightButton" and MonkeyQuestConfig[MonkeyQuest.m_global].m_bAllowRightClick == true) then
 		if (MonkeyBuddyFrame ~= nil) then
 			MonkeyBuddy_ToggleDisplay()
 		end
@@ -236,9 +236,9 @@ function MonkeyQuest_OnMouseUp(self, button)
 		MonkeyQuestFrame:StopMovingOrSizing();
 		
 		-- save the position
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft = MonkeyQuestFrame:GetLeft();
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop = MonkeyQuestFrame:GetTop();
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom = MonkeyQuestFrame:GetBottom();
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft = MonkeyQuestFrame:GetLeft();
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop = MonkeyQuestFrame:GetTop();
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom = MonkeyQuestFrame:GetBottom();
 	end
 end
 
@@ -247,7 +247,7 @@ function MonkeyQuest_OnEnter()
 end
 
 function MonkeyQuest_OnLeave()
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader == true) then
 		MonkeyQuest_HideDetailedControls();
 	end
 end
@@ -255,7 +255,7 @@ end
 -- wraith:
 function MonkeyQuest_ShowDetailedControls()
 	MonkeyQuestTitleText:Show();
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons == false) then
 		MonkeyQuestMinimizeButton:Show();
 		MonkeyQuestCloseButton:Show();
 		MonkeyQuestShowHiddenCheckButton:Show();
@@ -265,7 +265,7 @@ end
 -- wraith:
 function MonkeyQuest_HideDetailedControls()
 	MonkeyQuestTitleText:Hide();
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons == false) then
 		MonkeyQuestMinimizeButton:Hide();
 		MonkeyQuestCloseButton:Hide();
 		MonkeyQuestShowHiddenCheckButton:Hide();
@@ -284,7 +284,7 @@ end
 
 function MonkeyQuestCloseButton_OnEnter(self, motion)
 	-- no noob tip?
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == false) then
 		return;
 	end
 
@@ -307,9 +307,9 @@ function MonkeyQuestMinimizeButton_OnClick()
 		return;
 	end
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized = not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized = not MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized;
 	
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized == true) then
 		MonkeyQuestMinimizeButton:SetNormalTexture("Interface\\AddOns\\MonkeyLibrary\\Textures\\MinimizeButton-Down");
 	else
 		MonkeyQuestMinimizeButton:SetNormalTexture("Interface\\AddOns\\MonkeyLibrary\\Textures\\MinimizeButton-Up");
@@ -320,7 +320,7 @@ end
 
 function MonkeyQuestMinimizeButton_OnEnter(self, motion)
 	-- no noob tip?
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == false) then
 		return;
 	end
 
@@ -329,7 +329,7 @@ function MonkeyQuestMinimizeButton_OnEnter(self, motion)
 
 	-- set the tool tip text
 	GameTooltip:SetText(MONKEYQUEST_NOOBTIP_HEADER, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized) then
 		GameTooltip:AddLine(MONKEYQUEST_NOOBTIP_RESTORE, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
 	else
 		GameTooltip:AddLine(MONKEYQUEST_NOOBTIP_MINIMIZE, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1);
@@ -347,14 +347,14 @@ function MonkeyQuestShowHiddenCheckButton_OnClick(self, button, down)
 
 	if (self:GetChecked()) then
 		PlaySound("igMainMenuOptionCheckBoxOff");
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = true;
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden = true;
 	else
 		PlaySound("igMainMenuOptionCheckBoxOn");
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = false;
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden = false;
 	end
 
 	if (MonkeyBuddyFrame ~= nil) then
-		MonkeyBuddyQuestCheck2:SetChecked(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden)
+		MonkeyBuddyQuestCheck2:SetChecked(MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden)
 	end
 
 	MonkeyQuest_Refresh();
@@ -363,7 +363,7 @@ end
 function MonkeyQuestShowHiddenCheckButton_OnEnter(self, motion)
 
 	-- no noob tip?
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == false) then
 		return;
 	end
 
@@ -383,20 +383,20 @@ end
 
 function MonkeyQuest_Show()
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay = true;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay = true;
 	MonkeyQuestFrame:Show();
 	MonkeyQuest_Refresh();
 end
 
 function MonkeyQuest_Hide()
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay = false;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay = false;
 	MonkeyQuestFrame:Hide();
 end
 
 function MonkeyQuest_SetAlpha(iAlpha)
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = iAlpha;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = iAlpha;
 	MonkeyQuestFrame:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, iAlpha);
 
 	--MonkeyQuestFrame:SetAlpha(0.5);
@@ -429,7 +429,7 @@ end
 
 function MonkeyQuest_SetHighlightAlpha(iAlpha)
 
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowZoneHighlight) then
 		MonkeyQuest_Refresh();
 	end
 
@@ -448,21 +448,21 @@ function MonkeyQuest_Refresh(MBDaily)
 	
 	if (MBDaily ~= nil) then
 		if (MBDaily == 1) then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests = true
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests = true
 		elseif (MBDaily == 0) then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests = false
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests = false
 		end
 	end
 	
 	-- set the check state of the MonkeyQuestShowHiddenCheckButton
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden == true) then
 		MonkeyQuestShowHiddenCheckButton:SetChecked(true);
 	else
 		MonkeyQuestShowHiddenCheckButton:SetChecked(false);
 	end
 	
 	-- make sure the minimize button has the right texture
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized == true) then
 		MonkeyQuestMinimizeButton:SetNormalTexture("Interface\\AddOns\\MonkeyLibrary\\Textures\\MinimizeButton-Down");
 	else
 		MonkeyQuestMinimizeButton:SetNormalTexture("Interface\\AddOns\\MonkeyLibrary\\Textures\\MinimizeButton-Up");
@@ -501,31 +501,31 @@ function MonkeyQuest_Refresh(MBDaily)
 		DQMax = "/" .. GetMaxDailyQuests();
 	end
 
-	MonkeyQuestTitleText:SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight + 2);
+	MonkeyQuestTitleText:SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight + 2);
 	-- set the title, with or without the number of quests
 
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests == true) then
-			if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle == false) then
-				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
+		if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNumQuests == true) then
+			if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitle == false) then
+				if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests == false) then
 					MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " " .. iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS);
 				else
 					MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " " .. iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS .. " (" .. DQCompleted .. DQMax .. ")");
 				end
 			else
-				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
+				if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests == false) then
 					MonkeyQuestTitleText:SetText(iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS);
 				else
 					MonkeyQuestTitleText:SetText(iNumQuests .. "/" .. MAX_QUESTLOG_QUESTS .. " (" .. DQCompleted .. DQMax .. ")");
 				end
 			end
-		elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle == false) then
-			if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
+		elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitle == false) then
+			if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests == false) then
 				MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE);
 			else
 				MonkeyQuestTitleText:SetText(MONKEYQUEST_TITLE .. " (" .. DQCompleted .. DQMax .. ")");
 			end
 		else
-			if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowDailyNumQuests == false) then
+			if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowDailyNumQuests == false) then
 				MonkeyQuestTitleText:SetText("");
 			else
 				MonkeyQuestTitleText:SetText("(" .. DQCompleted .. DQMax .. ")");
@@ -541,7 +541,7 @@ function MonkeyQuest_Refresh(MBDaily)
 		_G["MonkeyQuestButton" .. i]:Hide();
 		_G["MonkeyQuestHideButton" .. i]:Hide();
 		_G["MonkeyQuestButton" .. i .. "Text"]:SetWidth(MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8);
-		_G["MonkeyQuestButton" .. i .. "Text"]:SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight);
+		_G["MonkeyQuestButton" .. i .. "Text"]:SetTextHeight(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight);
 	end
 
 
@@ -549,13 +549,13 @@ function MonkeyQuest_Refresh(MBDaily)
 
 	local watchItemIndex = 0;
 
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bMinimized == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bMinimized == false) then
 
 		for i = 1, iNumEntries, 1 do
 			-- strQuestLogTitleText		the title text of the quest, may be a header (ex. Wetlands)
 			-- strQuestLevel			the level of the quest
 			-- strQuestTag				the tag on the quest (ex. COMPLETED)
-			local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency = GetQuestLogTitle(i);
+			local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(i);
 			
 			-- are we looking for the next header?
 			if (bNextHeader == true and isHeader) then
@@ -574,20 +574,20 @@ function MonkeyQuest_Refresh(MBDaily)
 				end
 				
 				-- double check this quest is in the hidden list, if not, it's a new quest
-				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] == nil) then
-					MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText] = {};
-					MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = true;
+				if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)] == nil) then
+					MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)] = {};
+					MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked = true;
 				end
 					
 				if (isHeader) then
 					
-					if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked == true) then
-						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders == false or
-							MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true or
-							MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAlwaysHeaders == true) then
+					if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked == true) then
+						if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders == false or
+							MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden == true or
+							MonkeyQuestConfig[MonkeyQuest.m_global].m_bAlwaysHeaders == true) then
 
 							strMonkeyQuestBody = strMonkeyQuestBody .. 
-								format(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderOpenColour .. "%s|r",
+								format(MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderOpenColour .. "%s|r",
 									"- " .. strQuestLogTitleText) .. "\n";
 								
 							_G["MonkeyQuestButton" .. iButtonId .. "Text"]:SetText(strMonkeyQuestBody);
@@ -601,18 +601,18 @@ function MonkeyQuest_Refresh(MBDaily)
 							_G["MonkeyQuestButton" .. iButtonId].id = iButtonId;
 			
 							_G["MonkeyQuestHideButton" .. iButtonId]:Hide();
-							_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
+							_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText.." - "..tostring(isHeader);
 							
 							iButtonId = iButtonId + 1;
 			
 							strMonkeyQuestBody = "";
 						end
 					else
-						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true or
-							MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAlwaysHeaders == true) then
+						if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden == true or
+							MonkeyQuestConfig[MonkeyQuest.m_global].m_bAlwaysHeaders == true) then
 
 							strMonkeyQuestBody = strMonkeyQuestBody .. 
-								format(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strHeaderClosedColour .. "%s|r",
+								format(MonkeyQuestConfig[MonkeyQuest.m_global].m_strHeaderClosedColour .. "%s|r",
 									"+ " .. strQuestLogTitleText) .. "\n";
 								
 							_G["MonkeyQuestButton" .. iButtonId .. "Text"]:SetText(strMonkeyQuestBody);
@@ -626,7 +626,7 @@ function MonkeyQuest_Refresh(MBDaily)
 							_G["MonkeyQuestButton" .. iButtonId].id = iButtonId;
 							
 							_G["MonkeyQuestHideButton" .. iButtonId]:Hide();
-							_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
+							_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText.." - "..tostring(isHeader);
 			
 							iButtonId = iButtonId + 1;
 			
@@ -637,63 +637,83 @@ function MonkeyQuest_Refresh(MBDaily)
 					end
 				else
 					-- check if the user even wants this displayed
-					if ((MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked == true or 
-						MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden) and 
-						(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedQuests == false or
-						(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedQuests == true and not isComplete) or
-						MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden)) then
+					if ((MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked == true or 
+						MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden) and 
+						(MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedQuests == false or
+						(MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedQuests == true and not isComplete) or
+						MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden)) then
 						
 						-- the user has this quest checked off or he's showing all quests anyways, so we show it
-						if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden ) then
+						if ( MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden ) then
 							_G["MonkeyQuestHideButton" .. iButtonId]:Show();
 						else
 							_G["MonkeyQuestHideButton" .. iButtonId]:Hide();
 						end
 						
 						-- update hide quests buttons
-						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked == true) then
+						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked == true) then
 							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(true);
 						else
 							_G["MonkeyQuestHideButton" .. iButtonId]:SetChecked(false);
 						end
 						
-						_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText;
+						_G["MonkeyQuestHideButton" .. iButtonId].m_strQuestLogTitleText = strQuestLogTitleText.." - "..tostring(isHeader);
 						
 
 
 						colour = GetQuestDifficultyColor(strQuestLevel);
 
 						-- Begin Pkp Changes
-						if(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourTitle) then
+						if(MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourTitle) then
 							strTitleColor = format("|c%02X%02X%02X%02X", 255, colour.r * 255, colour.g * 255, colour.b * 255);
 						else
-							strTitleColor = MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strQuestTitleColour;
+							strTitleColor = MonkeyQuestConfig[MonkeyQuest.m_global].m_strQuestTitleColour;
 						end
 						
 						-- padding
 						strMonkeyQuestBody = strMonkeyQuestBody .. "  ";
-
+						
 						-- check if the user wants the quest levels
-						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel == true) then
-							if (not suggestedGroup) or suggestedGroup <= 1 then	
-									suggestedGroup = ""
-							else
-									suggestedGroup = "g"..suggestedGroup
+						if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowQuestLevel == true) then
+							local chars = ""
+							local tagID, tagName = GetQuestTagInfo(questID);
+							if ( tagName ) then
+								if ( tagID == QUEST_TAG_GROUP) then
+									chars = "G"
+								elseif ( tagID == QUEST_TAG_PVP) then
+									chars = "P"
+								elseif ( tagID == QUEST_TAG_RAID) then
+									chars = "R"
+								elseif ( tagID == QUEST_TAG_DUNGEON) then
+									chars = "D"
+								elseif ( tagID == QUEST_TAG_LEGENDARY) then
+									chars = "L"
+								elseif ( tagID == QUEST_TAG_HEROIC) then
+									chars = "H"
+								elseif ( tagID == QUEST_TAG_RAID10) then
+									chars = "R"
+								elseif ( tagID == QUEST_TAG_RAID25) then
+									chars = "R"
+								elseif ( tagID == QUEST_TAG_SCENARIO) then
+									chars = "S"
+								elseif ( tagID == QUEST_TAG_ACCOUNT) then
+									chars = "A"
+								end
 							end
 							
-							if (frequency <= 1) then
-								frequency = ""
-							elseif (frequency == 2) then
-								--Daily
-								frequency = "*"
-							elseif (frequency == 3) then
-								--Weekly
-								frequency = "**"
+							if suggestedGroup and suggestedGroup > 1 then	
+								chars = chars .. suggestedGroup
+							end
+							
+							if ( frequency == LE_QUEST_FREQUENCY_DAILY ) then
+								chars = chars.."*"
+							elseif ( frequency == LE_QUEST_FREQUENCY_WEEKLY ) then
+								chars = chars.."**"
 							end
 							
 							strMonkeyQuestBody = strMonkeyQuestBody ..
 								format("|c%02X%02X%02X%02X%s|r", 255, colour.r * 255, colour.g * 255, colour.b * 255,
-									"["..strQuestLevel..suggestedGroup..frequency.."]");
+									"["..strQuestLevel..chars.."]");
 							
 						end
 
@@ -722,6 +742,7 @@ function MonkeyQuest_Refresh(MBDaily)
 							if ( not itemButton ) then
 								MQWATCHFRAME_NUM_ITEMS = watchItemIndex;
 								itemButton = CreateFrame("BUTTON", "MQWatchFrameItem" .. watchItemIndex, _G["MonkeyQuestFrame"], "QuestObjectiveItemButtonTemplate");
+								--SecureActionButtonTemplate
 							end
 
 							itemButton.questLogIndex = i;
@@ -731,9 +752,12 @@ function MonkeyQuest_Refresh(MBDaily)
 							SetItemButtonCount(itemButton, charges);
 							QuestObjectiveItem_UpdateCooldown(itemButton);
 							
+							--itemButton:SetAttribute("type","item")
+							--itemButton:SetAttribute("item",link)
+							
 							itemButton:ClearAllPoints();
-							if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft == true ) then
-								if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden == true ) then
+							if ( MonkeyQuestConfig[MonkeyQuest.m_global].m_bItemsOnLeft == true ) then
+								if ( MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden == true ) then
 									itemButton:SetPoint( "TOPRIGHT", _G["MonkeyQuestHideButton" .. iButtonId], "TOPLEFT", -12, 0);
 								else
 									itemButton:SetPoint( "TOPRIGHT", _G["MonkeyQuestButton" .. iButtonId], "TOPLEFT" );
@@ -754,21 +778,21 @@ function MonkeyQuest_Refresh(MBDaily)
 								
 								if (strLeaderBoardText) then
 									if (not iFinished) then
-										if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == true) then
+										if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress == true) then
 											strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. MonkeyQuest_GetLeaderboardColorStr(strLeaderBoardText) .. strLeaderBoardText .. "\n";
 										else
 											strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. strLeaderBoardText .. "\n";
 										end
-									elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives == false
-										or MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden) then
+									elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedObjectives == false
+										or MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden) then
 										strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. 
-											MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour ..
+											MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour ..
 											strLeaderBoardText .. "\n";
 									end
 								end
 							end
 							
-							if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete == true and strQuestLogTitleText ~= nil) then
+							if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bWorkComplete == true and strQuestLogTitleText ~= nil) then
 							
 								for ii = 1, GetNumQuestLeaderBoards(), 1 do
 
@@ -783,30 +807,18 @@ function MonkeyQuest_Refresh(MBDaily)
 											local currentObjectiveName = strQuestLogTitleText .. objectiveName;
 										
 											if (MonkeyQuestObjectiveTable[currentObjectiveName] == nil) then
-												MonkeyQuestObjectiveTable[currentObjectiveName] = {};
+												MonkeyQuestObjectiveTable[currentObjectiveName] = false
 											end
 
-											if (objectiveComplete == true and MonkeyQuestObjectiveTable[currentObjectiveName].complete == nil and MonkeyQuestAllowSounds == true) then
-
-												local FactionPlayer = UnitFactionGroup("player")
-
-												if (FactionPlayer == "Alliance") then
-													if (isComplete and isComplete > 0) then
-														PlaySoundFile("Sound\\Creature\\Peon\\PeonBuildingComplete1.wav");
-													else
-														PlaySoundFile("Sound\\Creature\\Peasant\\PeasantWhat3.wav");
-													end
-												elseif (FactionPlayer == "Horde") then
-													if (isComplete and isComplete > 0) then
-														PlaySoundFile("Sound\\Creature\\Peon\\PeonBuildingComplete1.wav");
-													else
-														PlaySoundFile("Sound\\Creature\\Peasant\\PeasantWhat3.wav");
-													end
+											if (objectiveComplete == true and MonkeyQuestObjectiveTable[currentObjectiveName] == false and MonkeyQuestAllowSounds == true) then
+												if (isComplete and isComplete > 0) then
+													PlaySoundFile("Sound\\Creature\\Peon\\PeonBuildingComplete1.wav");
+												else
+													PlaySoundFile("Sound\\Creature\\Peasant\\PeasantWhat3.wav");
 												end
-
 											end
 
-											MonkeyQuestObjectiveTable[currentObjectiveName].complete = objectiveComplete;
+											MonkeyQuestObjectiveTable[currentObjectiveName] = objectiveComplete
 										end
 									elseif (objectiveType == "event") then
 										if (objectiveDesc ~= nil) then
@@ -814,40 +826,28 @@ function MonkeyQuest_Refresh(MBDaily)
 											local currentObjectiveDesc = strQuestLogTitleText .. objectiveDesc;
 										
 											if (MonkeyQuestObjectiveTable[currentObjectiveDesc] == nil) then
-												MonkeyQuestObjectiveTable[currentObjectiveDesc] = {};
+												MonkeyQuestObjectiveTable[currentObjectiveDesc] = false;
 											end
 
-											if (objectiveComplete == true and MonkeyQuestObjectiveTable[currentObjectiveDesc].complete == nil and MonkeyQuestAllowSounds == true) then
-
-												local FactionPlayer = UnitFactionGroup("player")
-
-												if (FactionPlayer == "Alliance") then
-													if (isComplete and isComplete > 0) then
-														PlaySoundFile("Sound\\Creature\\Peon\\PeonBuildingComplete1.wav");
-													else
-														PlaySoundFile("Sound\\Creature\\Peasant\\PeasantWhat3.wav");
-													end
-												elseif (FactionPlayer == "Horde") then
-													if (isComplete and isComplete > 0) then
-														PlaySoundFile("Sound\\Creature\\Peon\\PeonBuildingComplete1.wav");
-													else
-														PlaySoundFile("Sound\\Creature\\Peasant\\PeasantWhat3.wav");
-													end
+											if (objectiveComplete == true and MonkeyQuestObjectiveTable[currentObjectiveDesc] == false and MonkeyQuestAllowSounds == true) then
+												if (isComplete and isComplete > 0) then
+													PlaySoundFile("Sound\\Creature\\Peon\\PeonBuildingComplete1.wav");
+												else
+													PlaySoundFile("Sound\\Creature\\Peasant\\PeasantWhat3.wav");
 												end
-
 											end
 
-											MonkeyQuestObjectiveTable[currentObjectiveDesc].complete = objectiveComplete;
+											MonkeyQuestObjectiveTable[currentObjectiveDesc] = objectiveComplete
 										end
 									end
 								end
 							end
 
-						elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives) then
+						elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives) then
 							-- this quest has no leaderboard so display the objective instead if the config is set
 			
 							strMonkeyQuestBody = strMonkeyQuestBody .. "    " .. 
-								format(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strOverviewColour .. "%s|r",
+								format(MonkeyQuestConfig[MonkeyQuest.m_global].m_strOverviewColour .. "%s|r",
 									strQuestObjectives) .. "\n";
 								--format("|c%02X%02X%02X%02X%s|r", 255, GRAY_FONT_COLOR.r * 255, GRAY_FONT_COLOR.g * 255, 
 								--GRAY_FONT_COLOR.b * 255, strQuestObjectives) .. "\n";
@@ -861,17 +861,17 @@ function MonkeyQuest_Refresh(MBDaily)
 						-- set the bg colour
 						_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(0.0, 0.0, 0.0, 0.0);
 
-						if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight) then
+						if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowZoneHighlight) then
 							local strSubZoneText = string.lower(GetSubZoneText());
 	
 							if (strSubZoneText ~= "") then
 								if (string.find(string.lower(strQuestDescription), strSubZoneText, 1, true) or 
 									string.find(string.lower(strQuestObjectives), strSubZoneText, 1, true)) then
 	
-									local a, r, g, b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strZoneHighlightColour);
+									local a, r, g, b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_global].m_strZoneHighlightColour);
 	
-									-- _G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
-									_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iHighlightAlpha);
+									-- _G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha);
+									_G["MonkeyQuestButton" .. iButtonId .. "Texture"]:SetVertexColor(r, g, b, MonkeyQuestConfig[MonkeyQuest.m_global].m_iHighlightAlpha);
 								end
 							end
 						end
@@ -977,7 +977,7 @@ function MonkeyQuest_Resize()
 	local text;
 	local button;
 	local iTextWidth = 0;
-	local iPadding = MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding;
+	local iPadding = MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding;
 
 	
 	-- if not loaded yet then get out
@@ -985,7 +985,7 @@ function MonkeyQuest_Resize()
 		return;
 	end
 
-	--iTextWidth = MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth - MONKEYQUEST_PADDING - 8;
+	--iTextWidth = MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth - MONKEYQUEST_PADDING - 8;
 	iTextWidth = MonkeyQuestFrame:GetWidth() - MONKEYQUEST_PADDING - 8;
 
 	-- make sure the titlebutton is the right size for the title text
@@ -1008,56 +1008,56 @@ function MonkeyQuest_Resize()
 
 	iHeight = iHeight + MonkeyQuestTitleText:GetHeight() + MONKEYQUEST_PADDING;
 	
-	--MonkeyQuestFrame:SetWidth(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth);
+	--MonkeyQuestFrame:SetWidth(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth);
 	MonkeyQuestFrame:SetHeight(iHeight);
 	
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft = 500;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft = 500;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop = 500;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop = 500;
 	end
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom = 539;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom == nil) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom = 539;
 	end
 	
 
 
 	-- Set the grow direction
 	-- Added by Diungo
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp == false) then
 		MonkeyQuestFrame:ClearAllPoints();
 		-- grow down
 		MonkeyQuestFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT",
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop);
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft,
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop);
 
 		-- check to see if it grew off the screen
 		--if (MonkeyQuestFrame:GetBottom() < 0) then
 		--	MonkeyQuestFrame:SetPoint("TOPLEFT", "UIParent", "BOTTOMLEFT",
-		--	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
+		--	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft,
 		--	MonkeyQuestFrame:GetHeight() - 2);
 		--end
 	else
 		MonkeyQuestFrame:ClearAllPoints();
 		-- grow up
 		MonkeyQuestFrame:SetPoint("BOTTOMLEFT", "UIParent", "BOTTOMLEFT",
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom);
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft,
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom);
 
 		-- check to see if it grew off the screen
 		--if (MonkeyQuestFrame:GetTop() > 1024) then
 		--	MonkeyQuestFrame:SetPoint("BOTTOMLEFT", "UIParent", "BOTTOMLEFT",
-		--	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft,
+		--	MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft,
 		--	1024 - (MonkeyQuestFrame:GetHeight() - 2));
 		--end
 	end
 
 	-- save the position
 	if (MonkeyQuestFrame:GetLeft() ~= nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft = MonkeyQuestFrame:GetLeft();
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop = MonkeyQuestFrame:GetTop();
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom = MonkeyQuestFrame:GetBottom();
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft = MonkeyQuestFrame:GetLeft();
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop = MonkeyQuestFrame:GetTop();
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom = MonkeyQuestFrame:GetBottom();
 	end
 end
 
@@ -1066,7 +1066,7 @@ function MonkeyQuest_GetLeaderboardColorStr(strText)
 	local i, j, iNumItems, iNumNeeded, strItemName = string.find(strText, "([-%d]+)/([-%d]+)%s*(.*)$");
 
 	-- wraith:
-	if ( MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress == true ) then
+	if ( MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress == true ) then
 		if (iNumItems ~= nil) then
 			local colour = {a = 1.0, r = 1.0, g = 1.0, b = 1.0};
 			colour.a, colour.r, colour.g, colour.b = MonkeyQuest_GetCompletenessColorStr(iNumItems, iNumNeeded);
@@ -1079,17 +1079,17 @@ function MonkeyQuest_GetLeaderboardColorStr(strText)
 		if (strItems ~= nil) then
 			if (strItems == strNeeded) then
 				-- strings are equal, completed objective
-				return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour;
+				return MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour;
 			else
 				-- strings are not equal, uncompleted objective
-				return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour;
+				return MonkeyQuestConfig[MonkeyQuest.m_global].m_strInitialObjectiveColour;
 			end
 		else
 			-- special objective
-			return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strSpecialObjectiveColour;
+			return MonkeyQuestConfig[MonkeyQuest.m_global].m_strSpecialObjectiveColour;
 		end
 	else
-		return MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour;
+		return MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour;
 	end
 end
 -- Get a colour for the leaderboard item depending on how "done" it is
@@ -1100,10 +1100,10 @@ function MonkeyQuest_GetCompletenessColorStr(iNumItems, iNumNeeded)
 	local colourComplete = {a = 1.0, r = 1.0, g = 1.0, b = 1.0};
 	local colourFinish = {a = 1.0, r = 1.0, g = 1.0, b = 1.0};
 
-	colourInitial.a, colourInitial.r, colourInitial.g, colourInitial.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour);
-	colourMid.a, colourMid.r, colourMid.g, colourMid.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strMidObjectiveColour);
-	colourComplete.a, colourComplete.r, colourComplete.g, colourComplete.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour);
-	colourFinish.a, colourFinish.r, colourFinish.g, colourFinish.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strFinishObjectiveColour);
+	colourInitial.a, colourInitial.r, colourInitial.g, colourInitial.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_global].m_strInitialObjectiveColour);
+	colourMid.a, colourMid.r, colourMid.g, colourMid.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_global].m_strMidObjectiveColour);
+	colourComplete.a, colourComplete.r, colourComplete.g, colourComplete.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour);
+	colourFinish.a, colourFinish.r, colourFinish.g, colourFinish.b = MonkeyLib_ColourStrToARGB(MonkeyQuestConfig[MonkeyQuest.m_global].m_strFinishObjectiveColour);
 
 	local colourDelta1 = {
 		a = (colourMid.a - colourInitial.a),
@@ -1160,13 +1160,13 @@ end
 -- when the mouse goes over the main frame, this gets called
 function MonkeyQuestTitle_OnEnter(self, motion)
 	-- noob tip?
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == true) then
 
 		-- put the tool tip in the specified position
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
+		if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "DEFAULT") then
 			GameTooltip_SetDefaultAnchor(GameTooltip, self);
 		else
-			GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
+			GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor);
 		end
 	
 		-- set the tool tip text
@@ -1197,7 +1197,7 @@ function MonkeyQuestButton_OnClick(self, button, down)
 	local strQuestLink = GetQuestLink(self.m_iQuestIndex);
 	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(self.m_iQuestIndex);
 
-
+	print(questID)
 	
 	if (isHeader) then
 		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[_G["MonkeyQuestHideButton" .. self.id].m_strQuestLogTitleText].m_bChecked =
@@ -1217,23 +1217,43 @@ function MonkeyQuestButton_OnClick(self, button, down)
 	if (IsShiftKeyDown() and activeWindow) then
 		-- what button was it?
 		if (button == "LeftButton") then
-			if (not suggestedGroup) or suggestedGroup <= 1 then	
-				suggestedGroup = ""
-			else
-				suggestedGroup = "g"..suggestedGroup
+			local chars = ""
+			local tagID, tagName = GetQuestTagInfo(questID);
+			if ( tagName ) then
+				if ( tagID == QUEST_TAG_GROUP) then
+					chars = "G"
+				elseif ( tagID == QUEST_TAG_PVP) then
+					chars = "P"
+				elseif ( tagID == QUEST_TAG_RAID) then
+					chars = "R"
+				elseif ( tagID == QUEST_TAG_DUNGEON) then
+					chars = "D"
+				elseif ( tagID == QUEST_TAG_LEGENDARY) then
+					chars = "L"
+				elseif ( tagID == QUEST_TAG_HEROIC) then
+					chars = "H"
+				elseif ( tagID == QUEST_TAG_RAID10) then
+					chars = "R"
+				elseif ( tagID == QUEST_TAG_RAID25) then
+					chars = "R"
+				elseif ( tagID == QUEST_TAG_SCENARIO) then
+					chars = "S"
+				elseif ( tagID == QUEST_TAG_ACCOUNT) then
+					chars = "A"
+				end
 			end
 			
-			if (frequency <= 1) then
-				frequency = ""
-			elseif (frequency == 2) then
-				--Daily
-				frequency = "*"
-			elseif (frequency == 3) then
-				--Weekly
-				frequency = "**"
+			if suggestedGroup and suggestedGroup > 1 then	
+				chars = chars .. suggestedGroup
+			end
+			
+			if ( frequency == LE_QUEST_FREQUENCY_DAILY ) then
+				chars = chars.."*"
+			elseif ( frequency == LE_QUEST_FREQUENCY_WEEKLY ) then
+				chars = chars.."**"
 			end
 
-			activeWindow:Insert("["..strQuestLevel..suggestedGroup..frequency.."] " .. strQuestLink .. " ");
+			activeWindow:Insert("["..strQuestLevel..chars.."] " .. strQuestLink .. " ");
 		else
 			local strChatObjectives = "";
 
@@ -1252,7 +1272,7 @@ function MonkeyQuestButton_OnClick(self, button, down)
 						strChatObjectives = strChatObjectives .. "{" .. strLeaderBoardText .. "} ";
 					end
 				end
-			elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives) then
+			elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives) then
 				-- this quest has no leaderboard so display the objective instead if the config is set
 				local strQuestDescription, strQuestObjectives = GetQuestLogQuestText();
 
@@ -1286,10 +1306,9 @@ function MonkeyQuestButton_OnClick(self, button, down)
 			--local tmpQuestLogSelection = GetQuestLogSelection();
 
 			-- Select the quest log entry for other functions like GetNumQuestLeaderBoards()
-			SelectQuestLogEntry(self.m_iQuestIndex);
+			-- SelectQuestLogEntry(self.m_iQuestIndex);
 			
-			SetAbandonQuest();
-			StaticPopup_Show("ABANDON_QUEST", GetAbandonQuestName());
+			QuestMapQuestOptions_AbandonQuest(questID)
 			
 			-- Restore the currently selected quest log entry
 			--SelectQuestLogEntry(tmpQuestLogSelection);
@@ -1313,21 +1332,25 @@ function MonkeyQuestButton_OnClick(self, button, down)
 		end
 
 		-- show the real questlog
-		ShowUIPanel(QuestLogFrame);
+		-- ShowUIPanel(QuestLogFrame);
 
 		-- actually select the quest entry
-		QuestMapFrame_OpenToQuestDetails(questID);
+		if (QuestMapFrame:IsShown() and QuestMapFrame:IsVisible()) then
+			QuestMapFrame_OpenToQuestDetails(questID)
+		else
+			QuestLogPopupDetailFrame_Show(self.m_iQuestIndex)
+		end
 
 		-- update the real quest log
-		QuestLog_Update();
+		-- QuestLog_Update();
 
 	elseif (button == "RightButton") then
-		if (_G["MonkeyQuestHideButton" .. self.m_iQuestIndex]:GetChecked()) then
+		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked == true) then
 			PlaySound("igMainMenuOptionCheckBoxOff");
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = false;
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked = false;
 		else
 			PlaySound("igMainMenuOptionCheckBoxOn");
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText].m_bChecked = true;
+			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_aQuestList[strQuestLogTitleText.." - "..tostring(isHeader)].m_bChecked = true;
 		end
 
 		MonkeyQuest_Refresh();
@@ -1338,7 +1361,7 @@ end
 
 function MonkeyQuestButton_OnEnter(self, motion)
 	
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "NONE") then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "NONE") then
 		return;
 	end
 	
@@ -1350,7 +1373,7 @@ function MonkeyQuestButton_OnEnter(self, motion)
 		return;
 	end
 
-	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency = GetQuestLogTitle(self.m_iQuestIndex);
+	local strQuestLogTitleText, strQuestLevel, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(self.m_iQuestIndex);
 
 	if (strQuestLogTitleText == nil) then
 		return;
@@ -1358,15 +1381,15 @@ function MonkeyQuestButton_OnEnter(self, motion)
 
 	if (isHeader) then
 		-- no noob tip?
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
+		if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == false) then
 			return;
 		end
 		
 		-- put the tool tip in the specified position
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
+		if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "DEFAULT") then
 			GameTooltip_SetDefaultAnchor(GameTooltip, self);
 		else
-			GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
+			GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor);
 		end
 	
 		-- set the tool tip text
@@ -1378,22 +1401,10 @@ function MonkeyQuestButton_OnEnter(self, motion)
 	end
 	
 	-- put the tool tip in the specified position
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "DEFAULT") then
 		GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
-		GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
-	end
-
-	if suggestedGroup and suggestedGroup > 1 then
-		suggestedGroup = " ("..GROUP.." "..suggestedGroup..")";
-	else
-		suggestedGroup = ""
-	end
-	
-	if (frequency == 2) then
-		suggestedGroup = format(DAILY_QUEST_TAG_TEMPLATE, suggestedGroup):trim();
-	elseif (frequency == 3) then
-		suggestedGroup = WEEKLY .. suggestedGroup
+		GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor);
 	end
 	
 	-- set the tool tip text
@@ -1403,13 +1414,39 @@ function MonkeyQuestButton_OnEnter(self, motion)
         GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["FAILED"]));   
     end
 	GameTooltip:AddLine(self.m_strQuestObjectives, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, 1);
-	GameTooltip:AddLine(suggestedGroup, TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1);
-	if (frequency == 2) then
-		GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["DAILY"]));
-	elseif (frequency == 3) then
-		GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["WEEKLY"]));
-	end
-	
+
+    local tagID, tagName = GetQuestTagInfo(questID);
+    if ( tagName ) then
+        local factionGroup = GetQuestFactionGroup(questID);
+        -- Faction-specific account quests have additional info in the tooltip
+        if ( tagID == QUEST_TAG_ACCOUNT and factionGroup ) then
+            local factionString = FACTION_ALLIANCE;
+            if ( factionGroup == LE_QUEST_FACTION_HORDE ) then
+                factionString = FACTION_HORDE;
+            end
+            tagName = format("%s (%s)", tagName, factionString);
+        end
+        GameTooltip:AddLine(tagName, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+        if ( QUEST_TAG_TCOORDS[tagID] ) then
+            local questTypeIcon;
+            if ( tagID == QUEST_TAG_ACCOUNT and factionGroup ) then
+                questTypeIcon = QUEST_TAG_TCOORDS["ALLIANCE"];
+                if ( factionGroup == LE_QUEST_FACTION_HORDE ) then
+                    questTypeIcon = QUEST_TAG_TCOORDS["HORDE"];
+                end
+            else
+                questTypeIcon = QUEST_TAG_TCOORDS[tagID];
+            end
+            GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(questTypeIcon));
+        end
+    end
+    if ( frequency == LE_QUEST_FREQUENCY_DAILY ) then
+        GameTooltip:AddLine(DAILY, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+        GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["DAILY"]));
+    elseif ( frequency == LE_QUEST_FREQUENCY_WEEKLY ) then
+        GameTooltip:AddLine(WEEKLY, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b);
+        GameTooltip:AddTexture("Interface\\QuestFrame\\QuestTypeIcons", unpack(QUEST_TAG_TCOORDS["WEEKLY"]));
+    end
 	
 	-- see if any nearby group mates are on this quest
 	local iNumPartyMembers;
@@ -1429,10 +1466,10 @@ function MonkeyQuestButton_OnEnter(self, motion)
 		
 		if (isOnQuest and isOnQuest == 1) then
 			-- this member is on the quest
-			GameTooltip:AddLine(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strCompleteObjectiveColour .. UnitName("party" .. i));
+			GameTooltip:AddLine(MonkeyQuestConfig[MonkeyQuest.m_global].m_strCompleteObjectiveColour .. UnitName("party" .. i));
 		else
 			-- this member isn't on the quest
-			GameTooltip:AddLine(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strInitialObjectiveColour .. UnitName("party" .. i));
+			GameTooltip:AddLine(MonkeyQuestConfig[MonkeyQuest.m_global].m_strInitialObjectiveColour .. UnitName("party" .. i));
 		end
 	end
 	
@@ -1445,15 +1482,15 @@ end
 
 function MonkeyQuestHideButton_OnEnter(self, motion)
 	-- no noob tip?
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips == false) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips == false) then
 		return;
 	end
 	
 	-- put the tool tip in the specified position
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "DEFAULT") then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "DEFAULT") then
 		GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
-		GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor);
+		GameTooltip:SetOwner(MonkeyQuestFrame, MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor);
 	end
 
 	-- set the tool tip text
@@ -1488,9 +1525,9 @@ end
 
 function MonkeyQuest_PrintPoints()
 	if (DEFAULT_CHAT_FRAME) then
-		DEFAULT_CHAT_FRAME:AddMessage("Left: "..MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameLeft);
-		DEFAULT_CHAT_FRAME:AddMessage("Top: "..MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameTop);
-		DEFAULT_CHAT_FRAME:AddMessage("Bottom: "..MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameBottom);
+		DEFAULT_CHAT_FRAME:AddMessage("Left: "..MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameLeft);
+		DEFAULT_CHAT_FRAME:AddMessage("Top: "..MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameTop);
+		DEFAULT_CHAT_FRAME:AddMessage("Bottom: "..MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameBottom);
 	end
 end
 

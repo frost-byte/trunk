@@ -412,7 +412,7 @@ function MonkeyQuestSlash_CmdResetToBlizzardStyle()
 end
 
 function MonkeyQuestSlash_CmdOpen(bOpen)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay = bOpen;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay = bOpen;
 	
 	if (bOpen == true) then
 		MonkeyQuest_Show();
@@ -427,7 +427,7 @@ function MonkeyQuestSlash_CmdOpen(bOpen)
 end
 
 function MonkeyQuestSlash_CmdShowHidden(bShow)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = bShow;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden = bShow;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -437,7 +437,7 @@ function MonkeyQuestSlash_CmdShowHidden(bShow)
 end
 
 function MonkeyQuestSlash_CmdUseOverviews(bOverviews)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives = bOverviews;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives = bOverviews;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -447,7 +447,7 @@ function MonkeyQuestSlash_CmdUseOverviews(bOverviews)
 end
 
 function MonkeyQuestSlash_CmdHideHeaders(bHide)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders = bHide;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders = bHide;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -457,7 +457,7 @@ function MonkeyQuestSlash_CmdHideHeaders(bHide)
 end
 
 function MonkeyQuestSlash_CmdAlwaysHeaders(bAlways)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAlwaysHeaders = bAlways;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bAlwaysHeaders = bAlways;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -467,11 +467,11 @@ function MonkeyQuestSlash_CmdAlwaysHeaders(bAlways)
 end
 
 function MonkeyQuestSlash_CmdHideBorder(bNoBorder)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder = bNoBorder;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder = bNoBorder;
 	
 	if (bNoBorder == true) then
 		MonkeyQuestFrame:SetBackdropBorderColor(0.0, 0.0, 0.0, 0.0);
-	elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder == true) then
+	elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder == true) then
 		MonkeyQuestFrame:SetBackdropBorderColor(MONKEYQUEST_DEFAULT_CRASHCOLOUR.r, MONKEYQUEST_DEFAULT_CRASHCOLOUR.g, MONKEYQUEST_DEFAULT_CRASHCOLOUR.b, 1.0);
 	else
 		MonkeyQuestFrame:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1.0);
@@ -484,7 +484,7 @@ function MonkeyQuestSlash_CmdHideBorder(bNoBorder)
 end
 
 function MonkeyQuestSlash_CmdGrowUp(bGrowUp)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp = bGrowUp;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp = bGrowUp;
 	
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -494,8 +494,8 @@ end
 
 function MonkeyQuestSlash_CmdAlpha(iAlpha)
 	if (iAlpha >= 0 and iAlpha <= 255) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = iAlpha / 255;
-		MonkeyQuest_SetAlpha(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = iAlpha / 255;
+		MonkeyQuest_SetAlpha(MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha);
 	end
 	
 	-- check for MonkeyBuddy
@@ -506,8 +506,8 @@ end
 
 function MonkeyQuestSlash_CmdWidth(iWidth)
 	if (iWidth >= 200 and iWidth <= 600) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth = iWidth;
-		MonkeyQuestFrame:SetWidth(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth = iWidth;
+		MonkeyQuestFrame:SetWidth(MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth);
 		MonkeyQuest_Refresh();
 	end
 	
@@ -519,7 +519,7 @@ end
 
 function MonkeyQuestSlash_CmdFontHeight(iHeight)
 	if (iHeight >= 8 and iHeight <= 48) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFontHeight = iHeight;
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFontHeight = iHeight;
 		
 		MonkeyQuest_Refresh();
 		
@@ -536,58 +536,58 @@ end
 
 function MonkeyQuestSlash_CmdTipAnchor(strAnchor)
 	if (strAnchor == nil) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "DEFAULT";
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "DEFAULT";
 		return;
 	end
 	
 	-- let's check that it's a valid anchor before setting it
 	if (string.upper(strAnchor) == "ANCHOR_TOPLEFT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_TOPRIGHT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_TOP") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_LEFT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_RIGHT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_BOTTOMLEFT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_BOTTOMRIGHT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_BOTTOM") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "ANCHOR_CURSOR") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "DEFAULT") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	if (string.upper(strAnchor) == "NONE") then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = string.upper(strAnchor);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = string.upper(strAnchor);
 		return;
 	end
 	
 	-- bad input or default, set it to the default position
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_TOPLEFT";
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "ANCHOR_TOPLEFT";
 	
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -596,7 +596,7 @@ function MonkeyQuestSlash_CmdTipAnchor(strAnchor)
 end
 
 function MonkeyQuestSlash_CmdShowNumQuests(bShowNumQuests)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNumQuests = bShowNumQuests;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNumQuests = bShowNumQuests;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -606,7 +606,7 @@ function MonkeyQuestSlash_CmdShowNumQuests(bShowNumQuests)
 end
 
 function MonkeyQuestSlash_CmdLock(bLocked)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bLocked = bLocked;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bLocked = bLocked;
 	
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -615,7 +615,7 @@ function MonkeyQuestSlash_CmdLock(bLocked)
 end
 
 function MonkeyQuestSlash_CmdColourTitleOn(bColourTitle)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourTitle = bColourTitle;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourTitle = bColourTitle;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -625,7 +625,7 @@ function MonkeyQuestSlash_CmdColourTitleOn(bColourTitle)
 end
 
 function MonkeyQuestSlash_CmdHideCompletedQuests(bHide)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedQuests = bHide;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedQuests = bHide;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -635,7 +635,7 @@ function MonkeyQuestSlash_CmdHideCompletedQuests(bHide)
 end
 
 function MonkeyQuestSlash_CmdHideCompletedObjectives(bHide)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideCompletedObjectives = bHide;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideCompletedObjectives = bHide;
 	MonkeyQuest_Refresh();
 	
 	-- check for MonkeyBuddy
@@ -645,7 +645,7 @@ function MonkeyQuestSlash_CmdHideCompletedObjectives(bHide)
 end
 
 function MonkeyQuestSlash_CmdShowTooltipObjectives(bShow)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowTooltipObjectives = bShow;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowTooltipObjectives = bShow;
 	
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -654,7 +654,7 @@ function MonkeyQuestSlash_CmdShowTooltipObjectives(bShow)
 end
 
 function MonkeyQuestSlash_CmdAllowRightClick(bAllow)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bAllowRightClick = bAllow;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bAllowRightClick = bAllow;
 	
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -663,7 +663,7 @@ function MonkeyQuestSlash_CmdAllowRightClick(bAllow)
 end
 
 function MonkeyQuestSlash_CmdHideTitleButtons(bHide)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitleButtons = bHide;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitleButtons = bHide;
 	
 	if (bHide == true) then
 		MonkeyQuestCloseButton:Hide();
@@ -682,7 +682,7 @@ function MonkeyQuestSlash_CmdHideTitleButtons(bHide)
 end
 
 function MonkeyQuestSlash_CmdHideTitle(bHide)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideTitle = bHide;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideTitle = bHide;
 	MonkeyQuest_Refresh();
 
 	-- check for MonkeyBuddy
@@ -692,7 +692,7 @@ function MonkeyQuestSlash_CmdHideTitle(bHide)
 end
 
 function MonkeyQuestSlash_CmdWorkComplete(bWork)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bWorkComplete = bWork;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bWorkComplete = bWork;
 	MonkeyQuest_Refresh();
 
 	-- check for MonkeyBuddy
@@ -702,7 +702,7 @@ function MonkeyQuestSlash_CmdWorkComplete(bWork)
 end
 
 function MonkeyQuestSlash_CmdColourObjectives(bColour)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bColourSubObjectivesByProgress = bColour;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bColourSubObjectivesByProgress = bColour;
 	MonkeyQuest_Refresh();
 
 	-- check for MonkeyBuddy
@@ -712,7 +712,7 @@ function MonkeyQuestSlash_CmdColourObjectives(bColour)
 end
 
 function MonkeyQuestSlash_CmdItemsOnLeft(bLeft)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bItemsOnLeft = bLeft;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bItemsOnLeft = bLeft;
 	MonkeyQuest_Refresh();
 
 	-- check for MonkeyBuddy
@@ -727,7 +727,7 @@ function MonkeyQuestSlash_CmdHideHeader(bHide)
 	else
 		MonkeyQuest_HideDetailedControls()
 	end
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bHideHeader = bHide;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bHideHeader = bHide;
 	MonkeyQuest_Refresh();
 
 	-- check for MonkeyBuddy
@@ -742,7 +742,7 @@ function MonkeyQuestSlash_ToggleDisplay()
 		return;
 	end
 
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDisplay) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bDisplay) then
 		MonkeyQuest_Hide();
 	else
 		MonkeyQuest_Show();
@@ -760,7 +760,7 @@ function MonkeyQuestSlash_ToggleShowHidden()
 		return;
 	end
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden = not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowHidden;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden = not MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowHidden;
 
 	MonkeyQuest_Refresh();
 	
@@ -776,7 +776,7 @@ function MonkeyQuestSlash_ToggleObjectives()
 		return;
 	end
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives = not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bObjectives;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives = not MonkeyQuestConfig[MonkeyQuest.m_global].m_bObjectives;
 
 	MonkeyQuest_Refresh();
 	
@@ -793,25 +793,25 @@ function MonkeyQuestSlash_ToggleAnchor()
 		return;
 	end
 
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDefaultAnchor == true) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDefaultAnchor = false;
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bDefaultAnchor == true) then
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_bDefaultAnchor = false;
 		
 	else
-		if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "ANCHOR_BOTTOMRIGHT") then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_BOTTOMLEFT";
+		if (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "ANCHOR_BOTTOMRIGHT") then
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "ANCHOR_BOTTOMLEFT";
 			
-		elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "ANCHOR_BOTTOMLEFT") then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_TOPLEFT";
+		elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "ANCHOR_BOTTOMLEFT") then
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "ANCHOR_TOPLEFT";
 		
-		elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "ANCHOR_TOPLEFT") then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_LEFT";
+		elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "ANCHOR_TOPLEFT") then
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "ANCHOR_LEFT";
 			
-		elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "ANCHOR_LEFT") then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_CURSOR";
+		elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "ANCHOR_LEFT") then
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "ANCHOR_CURSOR";
 			
-		elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor == "ANCHOR_CURSOR") then
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bDefaultAnchor = true;
-			MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_strAnchor = "ANCHOR_BOTTOMRIGHT";
+		elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor == "ANCHOR_CURSOR") then
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_bDefaultAnchor = true;
+			MonkeyQuestConfig[MonkeyQuest.m_global].m_strAnchor = "ANCHOR_BOTTOMRIGHT";
 			
 		end
 	end
@@ -829,13 +829,13 @@ function MonkeyQuestSlash_Alpha(msg)
 	end
 
 	if (not(tonumber(msg, 10) == nil)) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = tonumber(msg, 10);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = tonumber(msg, 10);
 	else
 		-- set it to the default
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha = MONKEYQUEST_DEFAULT_ALPHA;
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha = MONKEYQUEST_DEFAULT_ALPHA;
 	end
 	
-	MonkeyQuest_SetAlpha(MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iAlpha);
+	MonkeyQuest_SetAlpha(MonkeyQuestConfig[MonkeyQuest.m_global].m_iAlpha);
 	
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -850,10 +850,10 @@ function MonkeyQuestSlash_Width(msg)
 	end
 
 	if (not(tonumber(msg, 10) == nil)) then
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth = tonumber(msg, 10);
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth = tonumber(msg, 10);
 	else
 		-- set it to the default
-		MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iFrameWidth = MONKEYQUEST_DEFAULT_WIDTH;
+		MonkeyQuestConfig[MonkeyQuest.m_global].m_iFrameWidth = MONKEYQUEST_DEFAULT_WIDTH;
 	end
 	
 	MonkeyQuest_Refresh();
@@ -875,7 +875,7 @@ function MonkeyQuestSlash_ToggleNoHeaders()
 		return;
 	end
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders = not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoHeaders;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders = not MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoHeaders;
 
 	MonkeyQuest_Refresh();
 	
@@ -891,11 +891,11 @@ function MonkeyQuestSlash_ToggleNoBorder()
 		return;
 	end
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder = not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder = not MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder;
 
-	if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bNoBorder == true) then
+	if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bNoBorder == true) then
 		MonkeyQuestFrame:SetBackdropBorderColor(0.0, 0.0, 0.0, 0.0);
-	elseif (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bCrashBorder == false) then
+	elseif (MonkeyQuestConfig[MonkeyQuest.m_global].m_bCrashBorder == false) then
 		MonkeyQuestFrame:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 1.0);
 	else
 		MonkeyQuestFrame:SetBackdropBorderColor(MONKEYQUEST_DEFAULT_CRASHCOLOUR.r, MONKEYQUEST_DEFAULT_CRASHCOLOUR.g, MONKEYQUEST_DEFAULT_CRASHCOLOUR.b, 1.0);
@@ -915,7 +915,7 @@ function MonkeyQuestSlash_ToggleGrow()
 		return;
 	end
 
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp = not MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bGrowUp;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp = not MonkeyQuestConfig[MonkeyQuest.m_global].m_bGrowUp;
 
 	MonkeyQuest_Refresh();
 	
@@ -926,7 +926,7 @@ function MonkeyQuestSlash_ToggleGrow()
 end
 
 function MonkeyQuestSlash_CmdShowNoobTips(bShowNoobTips)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowNoobTips = bShowNoobTips;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowNoobTips = bShowNoobTips;
 
 	-- check for MonkeyBuddy
 	if (MonkeyBuddyQuestFrame_Refresh ~= nil) then
@@ -935,7 +935,7 @@ function MonkeyQuestSlash_CmdShowNoobTips(bShowNoobTips)
 end
 
 function MonkeyQuestSlash_CmdSetQuestPadding(iPadding)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_iQuestPadding = iPadding;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_iQuestPadding = iPadding;
 
 	local	i = 2;
 
@@ -954,7 +954,7 @@ function MonkeyQuestSlash_CmdSetQuestPadding(iPadding)
 end
 
 function MonkeyQuestSlash_CmdShowZoneHighlight(bShowZoneHighlight)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowZoneHighlight = bShowZoneHighlight;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowZoneHighlight = bShowZoneHighlight;
 
 	MonkeyQuest_Refresh();
 
@@ -965,7 +965,7 @@ function MonkeyQuestSlash_CmdShowZoneHighlight(bShowZoneHighlight)
 end
 
 function MonkeyQuestSlash_CmdShowQuestLevel(bShowQuestLevel)
-	MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowQuestLevel = bShowQuestLevel;
+	MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowQuestLevel = bShowQuestLevel;
 
 	MonkeyQuest_Refresh();
 
