@@ -25,7 +25,7 @@ function MonkeyQuest_SearchTooltip()
     
     
     -- does the user not want this feature?
-    if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowTooltipObjectives == false) then
+    if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowTooltipObjectives == false) then
         return false;
     end
     
@@ -115,7 +115,7 @@ function MonkeyQuest_SearchTooltipForRelevantQuest()
     
     
     -- does the user not want this feature?
-    if (MonkeyQuestConfig[MonkeyQuest.m_strPlayer].m_bShowTooltipObjectives == false) then
+    if (MonkeyQuestConfig[MonkeyQuest.m_global].m_bShowTooltipObjectives == false) then
         return false;
     end
 
